@@ -8,9 +8,6 @@ import lombok.*;
 import org.osariusz.lorepaint.mapUpdate.MapUpdate;
 import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.role.Role;
-
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 

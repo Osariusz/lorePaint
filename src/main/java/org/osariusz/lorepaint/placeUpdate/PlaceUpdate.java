@@ -5,11 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.place.Place;
-import org.osariusz.lorepaint.user.User;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor

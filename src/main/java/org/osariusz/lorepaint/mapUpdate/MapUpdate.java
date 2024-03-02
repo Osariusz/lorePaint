@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.osariusz.lorepaint.lore.Lore;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 
