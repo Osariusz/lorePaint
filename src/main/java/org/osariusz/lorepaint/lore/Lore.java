@@ -38,13 +38,16 @@ public class Lore {
     private LocalDateTime last_edit;
 
     @NotEmpty(message = "Lore must have at least 1 map update")
+    @NotNull(message = "Map update list must not be null")
     @OneToMany(mappedBy = "lore")
     private List<MapUpdate> mapUpdates;
 
     @OneToMany(mappedBy = "lore")
+    @NotNull(message = "Role list must not be null")
     private List<Role> roles;
 
     @OneToMany(mappedBy = "lore")
+    @NotNull(message = "Place list must not be null")
     private List<Place> places;
 
 }
