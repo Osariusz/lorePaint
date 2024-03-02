@@ -21,7 +21,7 @@ public class MapUpdate {
     private String picture_path;
 
     @Column
-    private String date;
+    private LocalDateTime lore_date;
 
     @Column
     private Long x;

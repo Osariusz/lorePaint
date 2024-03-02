@@ -34,7 +34,7 @@ public class PlaceUpdate {
     private LocalDateTime last_edit;
 
     @Column
-    private String date;
+    private LocalDateTime lore_date;
 
     @ManyToOne
     @JoinColumn(name="place_id", nullable = false)

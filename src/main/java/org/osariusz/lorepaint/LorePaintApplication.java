@@ -10,22 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.List;
 
 @SpringBootApplication
-public class LorePaintApplication implements CommandLineRunner {
-
-    @Autowired
-    private EntityManager entityManager;
+public class LorePaintApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(LorePaintApplication.class, args);
-    }
-
-    @Override
-    public void run(String... args) throws Exception {
-        Query query = entityManager.createNativeQuery("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");
-        List<String> tableNames = query.getResultList();
-
-        for (String tableName : tableNames) {
-            System.out.println(tableName);
-        }
     }
 }
