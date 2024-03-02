@@ -1,5 +1,6 @@
 package org.osariusz.lorepaint.mapUpdate;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.osariusz.lorepaint.lore.Lore;
 
@@ -20,12 +21,15 @@ public class MapUpdate {
     @Column
     private String picture_path;
 
+    @NotNull(message = "Lore date must not be null")
     @Column
     private LocalDateTime lore_date;
 
+    @NotNull(message = "X coordinate must not be null")
     @Column
     private Long x;
 
+    @NotNull(message = "Y coordinate must not be null")
     @Column
     private Long y;
 

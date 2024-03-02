@@ -1,6 +1,9 @@
 package org.osariusz.lorepaint.lore;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.osariusz.lorepaint.mapUpdate.MapUpdate;
 import org.osariusz.lorepaint.place.Place;
@@ -23,6 +26,8 @@ public class Lore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Lore name must not be null")
+    @NotBlank(message = "Lore name must not be blank")
     @Column
     private String name;
 
@@ -32,6 +37,7 @@ public class Lore {
     @Column
     private LocalDateTime last_edit;
 
+    @NotEmpty(message = "Lore must have at least 1 map update")
     @OneToMany(mappedBy = "lore")
     private List<MapUpdate> mapUpdates;
 
