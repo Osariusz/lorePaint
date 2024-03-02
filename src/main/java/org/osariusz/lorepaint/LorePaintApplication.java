@@ -17,9 +17,6 @@ import java.util.List;
 public class LorePaintApplication {
 
     public static void main(String[] args) {
-        ApplicationContext applicationContext = SpringApplication.run(LorePaintApplication.class, args);
-        LoreService service = applicationContext.getBean(LoreService.class);
-        Lore lore = new Lore();
-        service.validateLore(lore);
+        SpringApplication.run(LorePaintApplication.class, args);
     }
 }
