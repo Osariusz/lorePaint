@@ -28,4 +28,10 @@ public class UserRolesService {
         return roleRepository.findAllByLoreAndUser(lore, user);
     }
 
+    public boolean isAdmin(long loreId, long userId) {
+        return getUserRoles(loreId, userId).stream().anyMatch((Role role) -> {
+            return role.getRole().equals(Role.UserRole.ADMIN);
+        });
+    }
+
 }
