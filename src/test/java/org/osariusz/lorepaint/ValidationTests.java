@@ -1,10 +1,6 @@
 package org.osariusz.lorepaint;
 
 import jakarta.validation.*;
-import org.aspectj.lang.annotation.Before;
-import org.hibernate.Hibernate;
-import org.hibernate.validator.internal.engine.ValidatorImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +11,9 @@ import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreRepository;
 import org.osariusz.lorepaint.lore.LoreService;
 import org.osariusz.lorepaint.mapUpdate.MapUpdate;
+import org.osariusz.lorepaint.role.Role;
+import org.osariusz.lorepaint.role.RoleService;
+import org.osariusz.lorepaint.user.User;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 
@@ -25,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
-class LorePaintApplicationTests {
+class ValidationTests {
 
     @Spy
     private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
@@ -36,8 +35,11 @@ class LorePaintApplicationTests {
     @InjectMocks
     private LoreService loreService;
 
+    @InjectMocks
+    private RoleService roleService;
+
     @Test
-    public void validate_doesNotThrowException() {
+    public void LoreAssertDoestNotThrow() {
 
         // Arrange
         Lore lore = new Lore(); // Assuming Lore is a valid class. Populate it as necessary.
@@ -48,18 +50,18 @@ class LorePaintApplicationTests {
         // Act and Assert
 
         lore.getMapUpdates().add(new MapUpdate());
-        loreService.validateLore(lore);
+        assertDoesNotThrow(() -> {loreService.validateLore(lore);});
     }
 
     @Test
-    public void assertThrowsMultipleProblems() {
+    public void LoreAssertThrowsMultipleProblems() {
         Lore lore = new Lore();
         lore.setName("a");
         assertThrows(ConstraintViolationException.class,() -> {loreService.validateLore(lore);});
     }
 
     @Test
-    public void assertThrowsButNameChangeHelps() {
+    public void LoreAssertThrowsButNameChangeHelps() {
 
         // Arrange
         Lore lore = new Lore(); // Assuming Lore is a valid class. Populate it as necessary.
@@ -75,6 +77,17 @@ class LorePaintApplicationTests {
         lore.setName("a");
         assertDoesNotThrow(() -> {loreService.validateLore(lore);});
 
+    }
+
+    @Test
+    public void RoleAssertNameMustNotBeBlank() {
+        Role role = new Role();
+        role.setRole("");
+        role.setUser(new User());
+        role.setLore(new Lore());
+        assertThrows(ConstraintViolationException.class, () -> {roleService.validateRole(role);});
+        role.setRole("admin");
+        assertDoesNotThrow(() -> {roleService.validateRole(role);});
     }
 
 }
