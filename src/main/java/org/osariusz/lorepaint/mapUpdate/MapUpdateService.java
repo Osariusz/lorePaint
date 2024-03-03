@@ -16,4 +16,9 @@ public class MapUpdateService {
     public void validateMapUpdate(MapUpdate mapUpdate) {
         Validation.validate(mapUpdate, validator);
     }
+
+    public void saveMapUpdate(MapUpdate mapUpdate) {
+        validateMapUpdate(mapUpdate);
+        mapUpdateRepository.save(mapUpdate);
+    }
 }

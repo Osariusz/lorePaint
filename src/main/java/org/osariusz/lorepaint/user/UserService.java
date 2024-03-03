@@ -22,4 +22,9 @@ public class UserService {
         Validation.validate(user, validator);
     }
 
+    public void saveUser(User user) {
+        validateUser(user);
+        userRepository.save(user);
+    }
+
 }
