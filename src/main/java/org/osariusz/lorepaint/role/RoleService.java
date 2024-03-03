@@ -16,4 +16,9 @@ public class RoleService {
     public void validateRole(Role role) {
         Validation.validate(role, validator);
     }
+
+    public void saveRole(Role role) {
+        validateRole(role);
+        roleRepository.save(role);
+    }
 }

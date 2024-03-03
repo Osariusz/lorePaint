@@ -1,12 +1,15 @@
 package org.osariusz.lorepaint.lore;
 
 import jakarta.validation.*;
+import org.osariusz.lorepaint.place.Place;
+import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -33,4 +36,5 @@ public class LoreService {
         validateLore(lore);
         loreRepository.save(lore);
     }
+
 }
