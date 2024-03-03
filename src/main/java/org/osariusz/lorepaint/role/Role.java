@@ -22,10 +22,14 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public enum UserRole {
+        ADMIN,
+        USER
+    }
+
     @NotNull(message = "Role string must not be null")
-    @NotBlank(message = "Role string must not be blank")
     @Column
-    private String role;
+    private UserRole role;
 
     @Column
     private LocalDateTime granted_at;

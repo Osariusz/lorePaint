@@ -82,11 +82,11 @@ class ValidationTests {
     @Test
     public void RoleAssertNameMustNotBeBlank() {
         Role role = new Role();
-        role.setRole("");
+        role.setRole(null);
         role.setUser(new User());
         role.setLore(new Lore());
         assertThrows(ConstraintViolationException.class, () -> {roleService.validateRole(role);});
-        role.setRole("admin");
+        role.setRole(Role.UserRole.ADMIN);
         assertDoesNotThrow(() -> {roleService.validateRole(role);});
     }
 
