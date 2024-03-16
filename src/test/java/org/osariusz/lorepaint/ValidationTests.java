@@ -11,12 +11,16 @@ import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreRepository;
 import org.osariusz.lorepaint.lore.LoreService;
 import org.osariusz.lorepaint.mapUpdate.MapUpdate;
+import org.osariusz.lorepaint.mapUpdate.MapUpdateRepository;
+import org.osariusz.lorepaint.mapUpdate.MapUpdateService;
 import org.osariusz.lorepaint.role.Role;
 import org.osariusz.lorepaint.role.RoleService;
 import org.osariusz.lorepaint.user.User;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -32,11 +36,17 @@ class ValidationTests {
     @Mock
     private LoreRepository loreRepository;
 
+    @Mock
+    private MapUpdateRepository mapUpdateRepository;
+
     @InjectMocks
     private LoreService loreService;
 
     @InjectMocks
     private RoleService roleService;
+
+    @InjectMocks
+    private MapUpdateService mapUpdateService;
 
     @Test
     public void LoreAssertDoestNotThrow() {
@@ -88,6 +98,25 @@ class ValidationTests {
         assertThrows(ConstraintViolationException.class, () -> {roleService.validateRole(role);});
         role.setRole(Role.UserRole.ADMIN);
         assertDoesNotThrow(() -> {roleService.validateRole(role);});
+    }
+
+    @Test
+    public void MapUpdateLoreDateMustNotBeNull() {
+        MapUpdate mapUpdate = new MapUpdate();
+        mapUpdate.setX(0L);
+        mapUpdate.setY(0L);
+        assertThrows(ConstraintViolationException.class, () -> {mapUpdateService.validateMapUpdate(mapUpdate);});
+        mapUpdate.setLore_date(LocalDateTime.of(2024,2,29,0,0));
+        assertDoesNotThrow(() -> {mapUpdateService.validateMapUpdate(mapUpdate);});
+
+    }
+
+    @Test
+    public void MapUpdateWrongDate() {
+        MapUpdate mapUpdate = new MapUpdate();
+        mapUpdate.setX(0L);
+        mapUpdate.setY(0L);
+        assertThrows(DateTimeException.class, () -> {mapUpdate.setLore_date(LocalDateTime.of(2024,2,31,0,0));});
     }
 
 }

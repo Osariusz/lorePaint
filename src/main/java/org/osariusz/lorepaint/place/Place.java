@@ -44,6 +44,9 @@ public class Place {
     private LocalDateTime last_edit;
 
     @Column
+    private LocalDateTime removed_at;
+
+    @Column
     private Boolean isSecret;
 
     @NotNull(message = "Lore id must not be null")

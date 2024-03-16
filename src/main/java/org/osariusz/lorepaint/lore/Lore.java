@@ -28,11 +28,18 @@ public class Lore {
     @Column
     private String name;
 
+    @NotNull(message = "Lore description must not be null")
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @Column
     private LocalDateTime created_at;
 
     @Column
     private LocalDateTime last_edit;
+
+    @Column
+    private LocalDateTime removed_at;
 
     @NotEmpty(message = "Lore must have at least 1 map update")
     @NotNull(message = "Map update list must not be null")

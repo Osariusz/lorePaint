@@ -29,9 +29,6 @@ public class PlaceUpdate {
     @Column
     private LocalDateTime created_at;
 
-    @Column
-    private LocalDateTime last_edit;
-
     @NotNull(message = "Placeupdate lore date must not be null")
     @Column
     private LocalDateTime lore_date;

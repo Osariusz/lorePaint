@@ -2,6 +2,8 @@ package org.osariusz.lorepaint.mapUpdate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.antlr.v4.runtime.misc.Interval;
+import org.hibernate.dialect.PostgreSQLIntervalSecondJdbcType;
 import org.osariusz.lorepaint.lore.Lore;
 
 import java.time.LocalDateTime;
@@ -34,9 +36,6 @@ public class MapUpdate {
 
     @Column
     private LocalDateTime created_at;
-
-    @Column
-    private LocalDateTime last_edit;
 
     @ManyToOne
     @JoinColumn(name="lore_id", nullable = false)

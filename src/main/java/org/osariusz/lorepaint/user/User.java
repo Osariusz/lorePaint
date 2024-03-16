@@ -37,6 +37,9 @@ public class User {
     @Column
     private LocalDateTime last_online;
 
+    @Column
+    private LocalDateTime removed_at;
+
     @OneToMany(mappedBy = "user")
     private List<Role> roles;
 
