@@ -15,13 +15,10 @@ import org.osariusz.lorepaint.shared.UserMapService;
 import org.osariusz.lorepaint.shared.UserRolesService;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
@@ -70,12 +67,12 @@ public class UserMapServiceTest {
         lore.setId(1L);
 
         role1 = new Role();
-        role1.setRole(Role.UserRole.USER);
+        role1.setRole(Role.UserRole.MEMBER);
         role1.setLore(lore);
         role1.setUser(user1);
 
         role2 = new Role();
-        role2.setRole(Role.UserRole.ADMIN);
+        role2.setRole(Role.UserRole.GM);
         role2.setLore(lore);
         role2.setUser(user2);
 

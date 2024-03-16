@@ -1,7 +1,6 @@
 package org.osariusz.lorepaint.role;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,8 +22,8 @@ public class Role {
     private Long id;
 
     public enum UserRole {
-        ADMIN,
-        USER
+        GM,
+        MEMBER
     }
 
     @NotNull(message = "Role string must not be null")

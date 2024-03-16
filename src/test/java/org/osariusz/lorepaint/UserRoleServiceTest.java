@@ -8,19 +8,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreRepository;
-import org.osariusz.lorepaint.mapUpdate.MapUpdate;
 import org.osariusz.lorepaint.role.Role;
 import org.osariusz.lorepaint.role.RoleRepository;
-import org.osariusz.lorepaint.role.RoleService;
 import org.osariusz.lorepaint.shared.UserRolesService;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserRepository;
-import org.osariusz.lorepaint.user.UserService;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -50,14 +45,14 @@ public class UserRoleServiceTest {
 
 
         Role role = new Role();
-        role.setRole(Role.UserRole.USER);
+        role.setRole(Role.UserRole.MEMBER);
         role.setLore(lore);
         role.setUser(user);
         Mockito.when(roleRepository.findAllByLoreAndUser(Mockito.any(), Mockito.any())).thenReturn(List.of(role));
 
         List<Role> roles = userRolesService.getUserRoles(lore.getId(), user.getId());
         assert roles.size() == 1;
-        assert roles.get(0).getRole().equals(Role.UserRole.USER);
+        assert roles.get(0).getRole().equals(Role.UserRole.MEMBER);
 
     }
 

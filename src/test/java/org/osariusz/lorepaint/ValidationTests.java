@@ -96,7 +96,7 @@ class ValidationTests {
         role.setUser(new User());
         role.setLore(new Lore());
         assertThrows(ConstraintViolationException.class, () -> {roleService.validateRole(role);});
-        role.setRole(Role.UserRole.ADMIN);
+        role.setRole(Role.UserRole.GM);
         assertDoesNotThrow(() -> {roleService.validateRole(role);});
     }
 

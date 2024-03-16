@@ -30,7 +30,7 @@ public class UserRolesService {
 
     public boolean isAdmin(long loreId, long userId) {
         return getUserRoles(loreId, userId).stream().anyMatch((Role role) -> {
-            return role.getRole().equals(Role.UserRole.ADMIN);
+            return role.getRole().equals(Role.UserRole.GM);
         });
     }
 
