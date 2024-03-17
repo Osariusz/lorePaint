@@ -7,7 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.osariusz.lorepaint.place.Place;
-import org.osariusz.lorepaint.role.Role;
+import org.osariusz.lorepaint.loreRole.LoreRole;
+import org.osariusz.lorepaint.systemRole.SystemRole;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +29,11 @@ public class User {
     @Column
     private String username;
 
+    @NotNull(message = "Password hash cannot be null")
+    @NotBlank(message = "Password hash cannot be blank")
+    @Column
+    private String password;
+
     @Column
     private LocalDateTime created_at;
 
@@ -41,7 +47,10 @@ public class User {
     private LocalDateTime removed_at;
 
     @OneToMany(mappedBy = "user")
-    private List<Role> roles;
+    private List<LoreRole> loreRoles;
+
+    @OneToMany(mappedBy = "user")
+    private List<SystemRole> systemRoles;
 
     @OneToMany(mappedBy = "owner")
     private List<Place> places;

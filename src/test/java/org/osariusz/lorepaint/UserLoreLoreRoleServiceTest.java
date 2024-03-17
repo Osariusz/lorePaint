@@ -8,8 +8,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreRepository;
-import org.osariusz.lorepaint.role.Role;
-import org.osariusz.lorepaint.role.RoleRepository;
+import org.osariusz.lorepaint.loreRole.LoreRole;
+import org.osariusz.lorepaint.loreRole.LoreRoleRepository;
 import org.osariusz.lorepaint.shared.UserRolesService;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserRepository;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
-public class UserRoleServiceTest {
+public class UserLoreLoreRoleServiceTest {
 
     @Mock
     private LoreRepository loreRepository;
@@ -30,7 +30,7 @@ public class UserRoleServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private RoleRepository roleRepository;
+    private LoreRoleRepository loreRoleRepository;
 
     @InjectMocks
     private UserRolesService userRolesService;
@@ -44,15 +44,15 @@ public class UserRoleServiceTest {
 
 
 
-        Role role = new Role();
-        role.setRole(Role.UserRole.MEMBER);
-        role.setLore(lore);
-        role.setUser(user);
-        Mockito.when(roleRepository.findAllByLoreAndUser(Mockito.any(), Mockito.any())).thenReturn(List.of(role));
+        LoreRole loreRole = new LoreRole();
+        loreRole.setRole(LoreRole.UserRole.MEMBER);
+        loreRole.setLore(lore);
+        loreRole.setUser(user);
+        Mockito.when(loreRoleRepository.findAllByLoreAndUser(Mockito.any(), Mockito.any())).thenReturn(List.of(loreRole));
 
-        List<Role> roles = userRolesService.getUserRoles(lore.getId(), user.getId());
-        assert roles.size() == 1;
-        assert roles.get(0).getRole().equals(Role.UserRole.MEMBER);
+        List<LoreRole> loreRoles = userRolesService.getUserRoles(lore.getId(), user.getId());
+        assert loreRoles.size() == 1;
+        assert loreRoles.get(0).getRole().equals(LoreRole.UserRole.MEMBER);
 
     }
 

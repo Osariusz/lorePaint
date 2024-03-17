@@ -4,7 +4,6 @@ import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreRepository;
 import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.place.PlaceRepository;
-import org.osariusz.lorepaint.role.RoleRepository;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

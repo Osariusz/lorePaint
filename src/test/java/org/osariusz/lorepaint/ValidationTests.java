@@ -13,8 +13,8 @@ import org.osariusz.lorepaint.lore.LoreService;
 import org.osariusz.lorepaint.mapUpdate.MapUpdate;
 import org.osariusz.lorepaint.mapUpdate.MapUpdateRepository;
 import org.osariusz.lorepaint.mapUpdate.MapUpdateService;
-import org.osariusz.lorepaint.role.Role;
-import org.osariusz.lorepaint.role.RoleService;
+import org.osariusz.lorepaint.loreRole.LoreRole;
+import org.osariusz.lorepaint.loreRole.LoreRoleService;
 import org.osariusz.lorepaint.user.User;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
@@ -43,7 +43,7 @@ class ValidationTests {
     private LoreService loreService;
 
     @InjectMocks
-    private RoleService roleService;
+    private LoreRoleService roleService;
 
     @InjectMocks
     private MapUpdateService mapUpdateService;
@@ -56,7 +56,7 @@ class ValidationTests {
         lore.setName("a");
         lore.setMapUpdates(new ArrayList<>());
         lore.setPlaces(new ArrayList<>());
-        lore.setRoles(new ArrayList<>());
+        lore.setLoreRoles(new ArrayList<>());
         // Act and Assert
 
         lore.getMapUpdates().add(new MapUpdate());
@@ -78,7 +78,7 @@ class ValidationTests {
 
         lore.setMapUpdates(new ArrayList<>());
         lore.setPlaces(new ArrayList<>());
-        lore.setRoles(new ArrayList<>());
+        lore.setLoreRoles(new ArrayList<>());
         // Act and Assert
 
         lore.getMapUpdates().add(new MapUpdate());
@@ -90,14 +90,14 @@ class ValidationTests {
     }
 
     @Test
-    public void RoleAssertNameMustNotBeBlank() {
-        Role role = new Role();
-        role.setRole(null);
-        role.setUser(new User());
-        role.setLore(new Lore());
-        assertThrows(ConstraintViolationException.class, () -> {roleService.validateRole(role);});
-        role.setRole(Role.UserRole.GM);
-        assertDoesNotThrow(() -> {roleService.validateRole(role);});
+    public void LoreRoleAssertNameMustNotBeBlank() {
+        LoreRole loreRole = new LoreRole();
+        loreRole.setRole(null);
+        loreRole.setUser(new User());
+        loreRole.setLore(new Lore());
+        assertThrows(ConstraintViolationException.class, () -> {roleService.validateRole(loreRole);});
+        loreRole.setRole(LoreRole.UserRole.GM);
+        assertDoesNotThrow(() -> {roleService.validateRole(loreRole);});
     }
 
     @Test

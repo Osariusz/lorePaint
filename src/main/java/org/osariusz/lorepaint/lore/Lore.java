@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.osariusz.lorepaint.mapUpdate.MapUpdate;
 import org.osariusz.lorepaint.place.Place;
-import org.osariusz.lorepaint.role.Role;
+import org.osariusz.lorepaint.loreRole.LoreRole;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -47,8 +47,8 @@ public class Lore {
     private List<MapUpdate> mapUpdates;
 
     @OneToMany(mappedBy = "lore")
-    @NotNull(message = "Role list must not be null")
-    private List<Role> roles;
+    @NotNull(message = "LoreRole list must not be null")
+    private List<LoreRole> loreRoles;
 
     @OneToMany(mappedBy = "lore")
     @NotNull(message = "Place list must not be null")
