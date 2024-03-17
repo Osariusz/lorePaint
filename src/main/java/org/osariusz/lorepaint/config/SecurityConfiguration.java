@@ -1,14 +1,18 @@
 package org.osariusz.lorepaint.config;
 
+import org.osariusz.lorepaint.systemRole.SystemRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,44 +29,39 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 class SecurityConfiguration {
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity
-//                .authorizeHttpRequests((authorize) -> authorize
-//                        .anyRequest().authenticated()
-//                )
-//                .httpBasic(withDefaults());
-//        return httpSecurity.build();
-//    }
-//    
-//    @Bean
-//    DataSource dataSource() {
-//        return new EmbeddedDatabaseBuilder()
-//                .setType()
-//                .addScript(JdbcDaoImpl.DEFAULT_USER_SCHEMA_DDL_LOCATION)
-//                .build();
-//    }
-//
-//    @Beanplaces
-//    @Description("In memory Userdetails service registered since DB doesn't have user table ")
-//    public UserDetailsService users() {
-//        // The builder will ensure the passwords are encoded before saving in memory
-//        UserDetails user = User.builder()
-//                .username("user")
-//                .password(passwordEncoder().encode("password"))
-//                .roles("USER")
-//                .build();
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password(passwordEncoder().encode("password"))
-//                .roles("USER", "ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(user, admin);
-//    }
-//
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(authz -> authz.requestMatchers("/api/auth/**").permitAll()
+                        .anyRequest().authenticated());
+
+        return http.build();
+    }
+
+
+    @Bean
+    public UserDetailsService users() {
+        UserDetails admin = User.builder()
+                .username("admin")
+                .password(passwordEncoder().encode("password"))
+                .roles(SystemRole.UserRole.ADMIN.name())
+                .build();
+        UserDetails user = User.builder()
+                .username("user")
+                .password(passwordEncoder().encode("password"))
+                .roles(SystemRole.UserRole.USER.name())
+                .build();
+        return new InMemoryUserDetailsManager(admin, user);
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }
