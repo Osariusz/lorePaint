@@ -5,8 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.user.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
 
@@ -38,5 +39,9 @@ public class SystemRole {
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;
+
+    public GrantedAuthority toAuthority() {
+        return new SimpleGrantedAuthority(role.name());
+    }
 
 }
