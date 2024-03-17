@@ -1,4 +1,4 @@
-package org.osariusz.lorepaint.systemRole;
+package org.osariusz.lorepaint.systemUserRole;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "system_roles")
-public class SystemRole {
+@Table(name = "system_user_roles")
+public class SystemUserRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class SystemRole {
         ADMIN
     }
 
-    @NotNull(message = "LoreRole string must not be null")
+    @NotNull(message = "LoreUserRole string must not be null")
     @Column
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -35,7 +35,7 @@ public class SystemRole {
     @Column
     private LocalDateTime granted_at;
 
-    @NotNull(message = "LoreRole user id cannot be null")
+    @NotNull(message = "LoreUserRole user id cannot be null")
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;

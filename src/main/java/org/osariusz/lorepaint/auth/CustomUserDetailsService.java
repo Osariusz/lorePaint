@@ -1,6 +1,6 @@
 package org.osariusz.lorepaint.auth;
 
-import org.osariusz.lorepaint.systemRole.SystemRole;
+import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                user.getSystemRoles().stream().map(SystemRole::toAuthority).collect(Collectors.toList())
+                user.getSystemUserRoles().stream().map(SystemUserRole::toAuthority).collect(Collectors.toList())
         );
     }
 

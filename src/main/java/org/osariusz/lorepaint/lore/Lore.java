@@ -5,9 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
 import org.osariusz.lorepaint.mapUpdate.MapUpdate;
 import org.osariusz.lorepaint.place.Place;
-import org.osariusz.lorepaint.loreRole.LoreRole;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -47,8 +48,8 @@ public class Lore {
     private List<MapUpdate> mapUpdates;
 
     @OneToMany(mappedBy = "lore")
-    @NotNull(message = "LoreRole list must not be null")
-    private List<LoreRole> loreRoles;
+    @NotNull(message = "LoreUserRole list must not be null")
+    private List<LoreUserRole> loreUserRoles;
 
     @OneToMany(mappedBy = "lore")
     @NotNull(message = "Place list must not be null")
