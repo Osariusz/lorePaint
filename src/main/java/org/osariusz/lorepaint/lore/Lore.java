@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
+import org.osariusz.lorepaint.map.Map;
 import org.osariusz.lorepaint.mapUpdate.MapUpdate;
 import org.osariusz.lorepaint.place.Place;
 
@@ -44,8 +45,9 @@ public class Lore {
 
     @NotEmpty(message = "Lore must have at least 1 map update")
     @NotNull(message = "Map update list must not be null")
-    @OneToMany(mappedBy = "lore")
-    private List<MapUpdate> mapUpdates;
+    @OneToOne
+    @JoinColumn(name="map_id", nullable = false)
+    private Map map;
 
     @OneToMany(mappedBy = "lore")
     @NotNull(message = "LoreUserRole list must not be null")

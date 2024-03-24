@@ -1,14 +1,14 @@
-package org.osariusz.lorepaint.loreRole;
+package org.osariusz.lorepaint.SystemRole;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.osariusz.lorepaint.lore.Lore;
-import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 import org.osariusz.lorepaint.user.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,25 +17,30 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "lore_roles")
-public class LoreRole {
+@Table(name = "system_roles")
+public class SystemRole {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public enum UserRole {
-        GM,
-        MEMBER
+        USER,
+        ADMIN
     }
 
-    @NotNull(message = "LoreRole string must not be null")
+    @NotNull(message = "SystemRole string must not be null")
     @Column
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+
     @NotNull(message = "SystemRole user id cannot be null")
     @OneToMany(mappedBy = "role")
-    private List<LoreUserRole> userRoles;
+    private List<SystemUserRole> userRoles;
+
+    public GrantedAuthority toAuthority() {
+        return new SimpleGrantedAuthority(role.name());
+    }
 
 }

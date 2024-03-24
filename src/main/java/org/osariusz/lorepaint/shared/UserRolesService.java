@@ -2,6 +2,8 @@ package org.osariusz.lorepaint.shared;
 
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreRepository;
+import org.osariusz.lorepaint.loreRole.LoreRole;
+import org.osariusz.lorepaint.loreRole.LoreRoleRepository;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRoleRepository;
 import org.osariusz.lorepaint.user.User;
@@ -20,6 +22,9 @@ public class UserRolesService {
     private LoreUserRoleRepository loreUserRoleRepository;
 
     @Autowired
+    private LoreRoleRepository loreRoleRepository;
+
+    @Autowired
     private LoreRepository loreRepository;
 
     public List<LoreUserRole> getUserRoles(long loreId, long userId) {
@@ -30,7 +35,7 @@ public class UserRolesService {
 
     public boolean isAdmin(long loreId, long userId) {
         return getUserRoles(loreId, userId).stream().anyMatch((LoreUserRole loreUserRole) -> {
-            return loreUserRole.getRole().equals(LoreUserRole.UserRole.GM);
+            return loreUserRole.getRole().equals(loreRoleRepository.findByRole(LoreRole.UserRole.GM));
         });
     }
 

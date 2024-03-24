@@ -5,6 +5,7 @@ import lombok.*;
 import org.antlr.v4.runtime.misc.Interval;
 import org.hibernate.dialect.PostgreSQLIntervalSecondJdbcType;
 import org.osariusz.lorepaint.lore.Lore;
+import org.osariusz.lorepaint.map.Map;
 
 import java.time.LocalDateTime;
 
@@ -38,6 +39,6 @@ public class MapUpdate {
     private LocalDateTime created_at;
 
     @ManyToOne
-    @JoinColumn(name="lore_id", nullable = false)
-    private Lore lore;
+    @JoinColumn(name="map_id", nullable = false)
+    private Map map;
 }

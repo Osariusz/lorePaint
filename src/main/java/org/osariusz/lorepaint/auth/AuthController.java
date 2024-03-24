@@ -1,5 +1,7 @@
 package org.osariusz.lorepaint.auth;
 
+import org.osariusz.lorepaint.SystemRole.SystemRole;
+import org.osariusz.lorepaint.SystemRole.SystemRoleRepository;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRoleRepository;
 import org.osariusz.lorepaint.user.User;
@@ -30,6 +32,8 @@ public class AuthController {
     private UserRepository userRepository;
 
     private SystemUserRoleRepository systemUserRoleRepository;
+
+    private SystemRoleRepository systemRoleRepository;
 
     private PasswordEncoder passwordEncoder;
 
@@ -69,7 +73,7 @@ public class AuthController {
 
         SystemUserRole userRole = new SystemUserRole();
         userRole.setUser(user);
-        userRole.setRole(SystemUserRole.UserRole.USER);
+        userRole.setRole(systemRoleRepository.findByRole(SystemRole.UserRole.USER));
         userRole.setGranted_at(registerTime);
 
         user.setSystemUserRoles(new ArrayList<>(List.of(userRole)));
