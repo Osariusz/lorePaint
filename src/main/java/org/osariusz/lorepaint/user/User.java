@@ -7,8 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.osariusz.lorepaint.place.Place;
-import org.osariusz.lorepaint.loreRole.LoreRole;
-import org.osariusz.lorepaint.systemRole.SystemRole;
+import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
+import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,10 +47,10 @@ public class User {
     private LocalDateTime removed_at;
 
     @OneToMany(mappedBy = "user")
-    private List<LoreRole> loreRoles;
+    private List<LoreUserRole> loreUserRoles;
 
     @OneToMany(mappedBy = "user")
-    private List<SystemRole> systemRoles;
+    private List<SystemUserRole> systemUserRoles;
 
     @OneToMany(mappedBy = "owner")
     private List<Place> places;

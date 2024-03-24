@@ -1,17 +1,17 @@
 package org.osariusz.lorepaint.auth;
 
-import org.osariusz.lorepaint.systemRole.SystemRole;
-import org.osariusz.lorepaint.systemRole.SystemRoleRepository;
+import org.osariusz.lorepaint.SystemRole.SystemRole;
+import org.osariusz.lorepaint.SystemRole.SystemRoleRepository;
+import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
+import org.osariusz.lorepaint.systemUserRole.SystemUserRoleRepository;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,15 +31,17 @@ public class AuthController {
 
     private UserRepository userRepository;
 
+    private SystemUserRoleRepository systemUserRoleRepository;
+
     private SystemRoleRepository systemRoleRepository;
 
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, SystemRoleRepository systemRoleRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, SystemUserRoleRepository systemUserRoleRepository, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
-        this.systemRoleRepository = systemRoleRepository;
+        this.systemUserRoleRepository = systemUserRoleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -69,15 +71,15 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         user.setCreated_at(registerTime);
 
-        SystemRole userRole = new SystemRole();
+        SystemUserRole userRole = new SystemUserRole();
         userRole.setUser(user);
-        userRole.setRole(SystemRole.UserRole.USER);
+        userRole.setRole(systemRoleRepository.findByRole(SystemRole.UserRole.USER));
         userRole.setGranted_at(registerTime);
 
-        user.setSystemRoles(new ArrayList<>(List.of(userRole)));
+        user.setSystemUserRoles(new ArrayList<>(List.of(userRole)));
 
         userRepository.save(user);
-        systemRoleRepository.save(userRole);
+        systemUserRoleRepository.save(userRole);
 
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }

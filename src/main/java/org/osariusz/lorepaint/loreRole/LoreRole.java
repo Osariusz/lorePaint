@@ -6,9 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.osariusz.lorepaint.lore.Lore;
+import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
+import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 import org.osariusz.lorepaint.user.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,16 +34,8 @@ public class LoreRole {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Column
-    private LocalDateTime granted_at;
+    @NotNull(message = "SystemRole user id cannot be null")
+    @OneToMany(mappedBy = "role")
+    private List<LoreUserRole> userRoles;
 
-    @NotNull(message = "LoreRole user id cannot be null")
-    @ManyToOne
-    @JoinColumn(name="user_id", nullable = false)
-    private User user;
-
-    @NotNull(message = "LoreRole lore id cannot be null")
-    @ManyToOne
-    @JoinColumn(name="lore_id", nullable = false)
-    private Lore lore;
 }

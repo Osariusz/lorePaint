@@ -4,6 +4,8 @@ import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreRepository;
 import org.osariusz.lorepaint.loreRole.LoreRole;
 import org.osariusz.lorepaint.loreRole.LoreRoleRepository;
+import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
+import org.osariusz.lorepaint.loreUserRole.LoreUserRoleRepository;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,20 +19,23 @@ public class UserRolesService {
     private UserRepository userRepository;
 
     @Autowired
+    private LoreUserRoleRepository loreUserRoleRepository;
+
+    @Autowired
     private LoreRoleRepository loreRoleRepository;
 
     @Autowired
     private LoreRepository loreRepository;
 
-    public List<LoreRole> getUserRoles(long loreId, long userId) {
+    public List<LoreUserRole> getUserRoles(long loreId, long userId) {
         Lore lore = loreRepository.getReferenceById(loreId);
         User user = userRepository.getReferenceById(userId);
-        return loreRoleRepository.findAllByLoreAndUser(lore, user);
+        return loreUserRoleRepository.findAllByLoreAndUser(lore, user);
     }
 
     public boolean isAdmin(long loreId, long userId) {
-        return getUserRoles(loreId, userId).stream().anyMatch((LoreRole loreRole) -> {
-            return loreRole.getRole().equals(LoreRole.UserRole.GM);
+        return getUserRoles(loreId, userId).stream().anyMatch((LoreUserRole loreUserRole) -> {
+            return loreUserRole.getRole().equals(loreRoleRepository.findByRole(LoreRole.UserRole.GM));
         });
     }
 

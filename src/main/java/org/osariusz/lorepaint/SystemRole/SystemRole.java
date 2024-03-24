@@ -1,15 +1,17 @@
-package org.osariusz.lorepaint.systemRole;
+package org.osariusz.lorepaint.SystemRole;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 import org.osariusz.lorepaint.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,18 +29,15 @@ public class SystemRole {
         ADMIN
     }
 
-    @NotNull(message = "LoreRole string must not be null")
+    @NotNull(message = "SystemRole string must not be null")
     @Column
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Column
-    private LocalDateTime granted_at;
 
-    @NotNull(message = "LoreRole user id cannot be null")
-    @ManyToOne
-    @JoinColumn(name="user_id", nullable = false)
-    private User user;
+    @NotNull(message = "SystemRole user id cannot be null")
+    @OneToMany(mappedBy = "role")
+    private List<SystemUserRole> userRoles;
 
     public GrantedAuthority toAuthority() {
         return new SimpleGrantedAuthority(role.name());
