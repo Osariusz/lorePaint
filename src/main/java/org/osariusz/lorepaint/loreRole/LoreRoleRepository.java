@@ -12,4 +12,6 @@ import java.util.List;
 @Repository
 public interface LoreRoleRepository extends JpaRepository<LoreRole, Long> {
     public LoreRole findByRole(@NotNull(message = "LoreRole role cannot be null") LoreRole.UserRole role);
+
+    public boolean existsByRole(@NotNull(message = "LoreRole role cannot be null") LoreRole.UserRole role);
 }

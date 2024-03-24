@@ -11,14 +11,18 @@ import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 import org.osariusz.lorepaint.user.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
 @Table(name = "lore_roles")
 public class LoreRole {
+
+    public LoreRole() {
+        this.setUserRoles(new ArrayList<>());
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

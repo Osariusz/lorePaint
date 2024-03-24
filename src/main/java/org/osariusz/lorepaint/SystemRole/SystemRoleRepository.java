@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface SystemRoleRepository extends JpaRepository<SystemRole, Long> {
     public SystemRole findByRole(@NotNull(message = "SystemUserRole role cannot be null") SystemRole.UserRole role);
+
+    public boolean existsByRole(@NotNull(message = "SystemUserRole role cannot be null") SystemRole.UserRole role);
 }
