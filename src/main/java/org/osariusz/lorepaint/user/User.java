@@ -46,10 +46,10 @@ public class User {
     @Column
     private LocalDateTime removed_at;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<LoreUserRole> loreUserRoles;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<SystemUserRole> systemUserRoles;
 
     @OneToMany(mappedBy = "owner")
