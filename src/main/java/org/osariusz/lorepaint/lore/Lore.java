@@ -43,7 +43,6 @@ public class Lore {
     @Column
     private LocalDateTime removed_at;
 
-    @NotEmpty(message = "Lore must have at least 1 map update")
     @NotNull(message = "Map update list must not be null")
     @OneToOne
     @JoinColumn(name="map_id", nullable = false)

@@ -1,16 +1,21 @@
 package org.osariusz.lorepaint;
 
 import jakarta.validation.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreRepository;
 import org.osariusz.lorepaint.lore.LoreService;
+import org.osariusz.lorepaint.loreRole.LoreRole;
+import org.osariusz.lorepaint.loreRole.LoreRoleRepository;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
+import org.osariusz.lorepaint.map.Map;
 import org.osariusz.lorepaint.mapUpdate.MapUpdate;
 import org.osariusz.lorepaint.mapUpdate.MapUpdateRepository;
 import org.osariusz.lorepaint.mapUpdate.MapUpdateService;
@@ -48,18 +53,36 @@ class ValidationTests {
     @InjectMocks
     private MapUpdateService mapUpdateService;
 
+    @Mock
+    private LoreRoleRepository loreRoleRepository;
+
+    public void memberRoleSetup() {
+        LoreRole member = new LoreRole();
+        member.setRole(LoreRole.UserRole.MEMBER);
+        Mockito.when(loreRoleRepository.findByRole(LoreRole.UserRole.MEMBER)).thenReturn(member);
+    }
+
+    public void gmRoleSetup() {
+        LoreRole gm = new LoreRole();
+        gm.setRole(LoreRole.UserRole.GM);
+        Mockito.when(loreRoleRepository.findByRole(LoreRole.UserRole.GM)).thenReturn(gm);
+    }
+
     @Test
     public void LoreAssertDoestNotThrow() {
 
         // Arrange
         Lore lore = new Lore(); // Assuming Lore is a valid class. Populate it as necessary.
+        Map map = new Map();
+        lore.setMap(map);
         lore.setName("a");
-        lore.setMapUpdates(new ArrayList<>());
+        lore.setDescription("");
+        map.setMapUpdates(new ArrayList<>());
         lore.setPlaces(new ArrayList<>());
         lore.setLoreUserRoles(new ArrayList<>());
         // Act and Assert
 
-        lore.getMapUpdates().add(new MapUpdate());
+        map.getMapUpdates().add(new MapUpdate());
         assertDoesNotThrow(() -> {loreService.validateLore(lore);});
     }
 
@@ -75,13 +98,16 @@ class ValidationTests {
 
         // Arrange
         Lore lore = new Lore(); // Assuming Lore is a valid class. Populate it as necessary.
+        Map map = new Map();
+        lore.setMap(map);
+        lore.setDescription("");
 
-        lore.setMapUpdates(new ArrayList<>());
+        map.setMapUpdates(new ArrayList<>());
         lore.setPlaces(new ArrayList<>());
         lore.setLoreUserRoles(new ArrayList<>());
         // Act and Assert
 
-        lore.getMapUpdates().add(new MapUpdate());
+        map.getMapUpdates().add(new MapUpdate());
         assertThrows(ConstraintViolationException.class, () -> {loreService.validateLore(lore);});
 
         lore.setName("a");
@@ -91,12 +117,14 @@ class ValidationTests {
 
     @Test
     public void LoreRoleAssertNameMustNotBeBlank() {
+        gmRoleSetup();
+
         LoreUserRole loreUserRole = new LoreUserRole();
         loreUserRole.setRole(null);
         loreUserRole.setUser(new User());
         loreUserRole.setLore(new Lore());
         assertThrows(ConstraintViolationException.class, () -> {roleService.validateRole(loreUserRole);});
-        loreUserRole.setRole(LoreUserRole.UserRole.GM);
+        loreUserRole.setRole(loreRoleRepository.findByRole(LoreRole.UserRole.GM));
         assertDoesNotThrow(() -> {roleService.validateRole(loreUserRole);});
     }
 

@@ -7,6 +7,8 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreRepository;
+import org.osariusz.lorepaint.loreRole.LoreRole;
+import org.osariusz.lorepaint.loreRole.LoreRoleRepository;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
 import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.place.PlaceRepository;
@@ -43,6 +45,9 @@ public class UserMapServiceTest {
     @Mock
     private PlaceRepository placeRepository;
 
+    @Mock
+    private LoreRoleRepository loreRoleRepository;
+
     private User user1;
     private User user2;
     private User user3;
@@ -55,6 +60,14 @@ public class UserMapServiceTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
+        LoreRole member = new LoreRole();
+        member.setRole(LoreRole.UserRole.MEMBER);
+
+        LoreRole gm = new LoreRole();
+        gm.setRole(LoreRole.UserRole.GM);
+
+        Mockito.when(loreRoleRepository.findByRole(LoreRole.UserRole.MEMBER)).thenReturn(member);
+        Mockito.when(loreRoleRepository.findByRole(LoreRole.UserRole.GM)).thenReturn(gm);
 
         user1 = new User();
         user1.setId(1L);
@@ -67,12 +80,12 @@ public class UserMapServiceTest {
         lore.setId(1L);
 
         loreUserRole1 = new LoreUserRole();
-        loreUserRole1.setRole(LoreUserRole.UserRole.MEMBER);
+        loreUserRole1.setRole(loreRoleRepository.findByRole(LoreRole.UserRole.MEMBER));
         loreUserRole1.setLore(lore);
         loreUserRole1.setUser(user1);
 
         loreUserRole2 = new LoreUserRole();
-        loreUserRole2.setRole(LoreUserRole.UserRole.GM);
+        loreUserRole2.setRole(loreRoleRepository.findByRole(LoreRole.UserRole.GM));
         loreUserRole2.setLore(lore);
         loreUserRole2.setUser(user2);
 
