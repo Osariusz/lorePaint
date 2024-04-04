@@ -1,5 +1,6 @@
 package org.osariusz.lorepaint.lore;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -16,8 +17,9 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Entity
+@Getter
+@Setter
 @Table(name = "lores")
 public class Lore {
 
@@ -43,15 +45,18 @@ public class Lore {
     @Column
     private LocalDateTime removed_at;
 
+    @JsonIgnore
     @NotNull(message = "Map update list must not be null")
     @OneToOne
     @JoinColumn(name="map_id", nullable = false)
     private Map map;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "lore")
     @NotNull(message = "LoreUserRole list must not be null")
     private List<LoreUserRole> loreUserRoles;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "lore")
     @NotNull(message = "Place list must not be null")
     private List<Place> places;

@@ -51,7 +51,7 @@ class SecurityConfiguration {
 
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 //.authenticationProvider(authenticationProvider()).addFilterBefore()
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/auth/**","/login*").permitAll().requestMatchers("/error").authenticated().anyRequest().denyAll());
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/auth/**","/login*").permitAll().requestMatchers("/error","/api/").authenticated().anyRequest().denyAll());
 
         return http.build();
     }
