@@ -1,5 +1,7 @@
 package org.osariusz.lorepaint.auth;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.osariusz.lorepaint.SystemRole.SystemRole;
 import org.osariusz.lorepaint.SystemRole.SystemRoleRepository;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
@@ -7,7 +9,9 @@ import org.osariusz.lorepaint.systemUserRole.SystemUserRoleRepository;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,12 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/public")
 public class AuthController {
 
     private AuthenticationManager authenticationManager;
 
     private UserRepository userRepository;
+
+    private CustomUserDetailsService userDetailsService;
 
     @Autowired
     private SystemUserRoleRepository systemUserRoleRepository;
@@ -40,6 +46,9 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private JWTService jwtService;
+
+    @Autowired
     public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, SystemUserRoleRepository systemUserRoleRepository, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
@@ -48,7 +57,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getUsername(),
@@ -57,7 +66,20 @@ public class AuthController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed in successfully", HttpStatus.OK);
+        User user = userRepository.findByUsername(loginDto.getUsername()).orElseThrow();
+        String token = jwtService.generateToken(user);
+        ResponseCookie tokenCookie = ResponseCookie.from("token",token)
+                //.httpOnly(true)
+                //.secure(false)
+                .domain("localhost")
+                .path("/")
+                //.sameSite("Lax")
+                .maxAge(jwtService.getEXPIRATION_TIME())
+                .build();
+
+        response.setHeader(HttpHeaders.SET_COOKIE, tokenCookie.toString());
+
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, tokenCookie.toString()).build();
     }
 
     @PostMapping("/register")
@@ -83,7 +105,9 @@ public class AuthController {
         userRepository.save(user);
         systemUserRoleRepository.save(userRole);
 
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+        String token = jwtService.generateToken(user);
+
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
 

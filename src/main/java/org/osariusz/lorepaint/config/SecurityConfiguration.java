@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
@@ -25,33 +26,31 @@ import java.util.List;
 @EnableWebSecurity
 class SecurityConfiguration {
 
-    private JwtAuthEntryPoint authEntryPoint;
-
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    public SecurityConfiguration(CustomUserDetailsService customUserDetailsService){//, JwtAuthEntryPoint authEntryPoint) {
+    public SecurityConfiguration(CustomUserDetailsService customUserDetailsService){
         this.customUserDetailsService = customUserDetailsService;
         //this.authEntryPoint = authEntryPoint;
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
 
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.csrf(AbstractHttpConfigurer::disable) //TODO: enable csrf
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOrigins(List.of("http://localhost:3000"));
                     configuration.setAllowedMethods(List.of("*"));
                     configuration.setAllowedHeaders(List.of("*"));
+                    configuration.setAllowCredentials(true);
                     return configuration;
                 }))
                 //.formLogin(Customizer.withDefaults())
-                .exceptionHandling(exception -> {exception.authenticationEntryPoint(authEntryPoint).accessDeniedPage("/error/access-denied");})
-
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 //.authenticationProvider(authenticationProvider()).addFilterBefore()
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/auth/**","/login*").permitAll().requestMatchers("/error","/api/").authenticated().anyRequest().denyAll());
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/public/**").permitAll().requestMatchers("/error/**","/api/**").authenticated().anyRequest().denyAll());
 
         return http.build();
     }
