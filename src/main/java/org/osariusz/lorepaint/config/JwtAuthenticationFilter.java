@@ -49,7 +49,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Cookie tokenCookie = cookies.get(0);
 
         String token = tokenCookie.getValue();
-        String username = jwtService.extractUsername(token);
+        String username;
+        try {
+             username = jwtService.extractUsername(token);
+        }
+        catch(Exception e) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
