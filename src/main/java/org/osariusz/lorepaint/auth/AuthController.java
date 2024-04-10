@@ -68,7 +68,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         User user = userRepository.findByUsername(loginDto.getUsername()).orElseThrow();
         String token = jwtService.generateToken(user);
-        ResponseCookie tokenCookie = ResponseCookie.from("token",token)
+        ResponseCookie tokenCookie = ResponseCookie.from("token",token) //TODO: uncomment security measures below
                 //.httpOnly(true)
                 //.secure(false)
                 .domain("localhost")
