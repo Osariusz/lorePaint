@@ -63,7 +63,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response)
+    {
         Authentication authenticationRequest =
                 UsernamePasswordAuthenticationToken.unauthenticated(loginDto.getUsername(), loginDto.getPassword());
         Authentication authenticationResponse =
