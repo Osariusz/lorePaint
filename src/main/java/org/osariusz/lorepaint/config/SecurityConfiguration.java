@@ -17,6 +17,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
@@ -35,7 +39,7 @@ class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable) //TODO: enable csrf
                 .cors(cors -> cors.configurationSource(request -> {
@@ -47,9 +51,9 @@ class SecurityConfiguration {
                     return configuration;
                 }))
                 //.formLogin(Customizer.withDefaults())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+
                 //.authenticationProvider(authenticationProvider()).addFilterBefore()
+                .securityContext(securityCustomizer -> {securityCustomizer.securityContextRepository(securityContextRepository());})
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers("/public/**").permitAll().requestMatchers("/error/**","/api/**").authenticated().anyRequest().denyAll());
 
         return http.build();
@@ -66,6 +70,14 @@ class SecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DelegatingSecurityContextRepository securityContextRepository() {
+        return new DelegatingSecurityContextRepository(
+                new RequestAttributeSecurityContextRepository(),
+                new HttpSessionSecurityContextRepository()
+        );
     }
 
 }

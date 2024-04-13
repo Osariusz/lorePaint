@@ -1,7 +1,9 @@
 package org.osariusz.lorepaint.auth;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.osariusz.lorepaint.SystemRole.SystemRole;
 import org.osariusz.lorepaint.SystemRole.SystemRoleRepository;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
@@ -15,9 +17,13 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.context.DelegatingApplicationListener;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +52,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JWTService jwtService;
+    private DelegatingSecurityContextRepository securityContextRepository;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, SystemUserRoleRepository systemUserRoleRepository, PasswordEncoder passwordEncoder) {
@@ -57,29 +63,21 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginDto.getUsername(),
-                        loginDto.getPassword()
-                )
-        );
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response)
+    {
+        Authentication authenticationRequest =
+                UsernamePasswordAuthenticationToken.unauthenticated(loginDto.getUsername(), loginDto.getPassword());
+        Authentication authenticationResponse =
+                this.authenticationManager.authenticate(authenticationRequest);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user = userRepository.findByUsername(loginDto.getUsername()).orElseThrow();
-        String token = jwtService.generateToken(user);
-        ResponseCookie tokenCookie = ResponseCookie.from("token",token) //TODO: uncomment security measures below
-                //.httpOnly(true)
-                //.secure(false)
-                .domain("localhost")
-                .path("/")
-                //.sameSite("Lax")
-                .maxAge(jwtService.getEXPIRATION_TIME())
-                .build();
+        SecurityContextHolder.getContext().setAuthentication(authenticationResponse);
+        request.getSession();
 
-        response.setHeader(HttpHeaders.SET_COOKIE, tokenCookie.toString());
+        securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
 
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, tokenCookie.toString()).build();
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register")
@@ -105,9 +103,7 @@ public class AuthController {
         userRepository.save(user);
         systemUserRoleRepository.save(userRole);
 
-        String token = jwtService.generateToken(user);
-
-        return new ResponseEntity<>(token, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
