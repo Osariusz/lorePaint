@@ -38,12 +38,11 @@ class SecurityConfiguration {
     @Autowired
     public SecurityConfiguration(CustomUserDetailsService customUserDetailsService){
         this.customUserDetailsService = customUserDetailsService;
-        //this.authEntryPoint = authEntryPoint;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        
+
         http.cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOrigins(List.of("http://localhost:3000"));
