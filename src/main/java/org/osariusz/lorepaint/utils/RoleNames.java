@@ -11,4 +11,5 @@ public final class RoleNames {
     //lore
     public static final String LORE_GM_ROLE_NAME = "GM";
     public static final String LORE_MEMBER_ROLE_NAME = "MEMBER";
+
 }
