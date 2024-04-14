@@ -1,5 +1,6 @@
 package org.osariusz.lorepaint.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,6 +30,7 @@ public class User {
     @Column
     private String username;
 
+    @JsonIgnore
     @NotNull(message = "Password hash cannot be null")
     @NotBlank(message = "Password hash cannot be blank")
     @Column
@@ -46,12 +48,15 @@ public class User {
     @Column
     private LocalDateTime removed_at;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<LoreUserRole> loreUserRoles;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<SystemUserRole> systemUserRoles;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "owner")
     private List<Place> places;
 }
