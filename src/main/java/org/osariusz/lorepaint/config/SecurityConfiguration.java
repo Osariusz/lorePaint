@@ -43,9 +43,8 @@ class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        http.csrf(AbstractHttpConfigurer::disable) //TODO: enable csrf
-                .cors(cors -> cors.configurationSource(request -> {
+        
+        http.cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOrigins(List.of("http://localhost:3000"));
                     configuration.setAllowedMethods(List.of("*"));
@@ -53,9 +52,6 @@ class SecurityConfiguration {
                     configuration.setAllowCredentials(true);
                     return configuration;
                 }))
-                //.formLogin(Customizer.withDefaults())
-
-                //.authenticationProvider(authenticationProvider()).addFilterBefore()
                 .securityContext(securityCustomizer -> {securityCustomizer.securityContextRepository(securityContextRepository());})
                 .authorizeHttpRequests(authorize -> authorize.requestMatchers("/public/**").permitAll().requestMatchers("/error/**","/api/**").authenticated().anyRequest().denyAll());
 
