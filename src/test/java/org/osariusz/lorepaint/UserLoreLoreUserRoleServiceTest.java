@@ -57,7 +57,7 @@ public class UserLoreLoreUserRoleServiceTest {
         loreUserRole.setUser(user);
         Mockito.when(loreUserRoleRepository.findAllByLoreAndUser(Mockito.any(), Mockito.any())).thenReturn(List.of(loreUserRole));
 
-        List<LoreUserRole> loreUserRoles = userRolesService.getUserRoles(lore.getId(), user.getId());
+        List<LoreUserRole> loreUserRoles = userRolesService.getUserRoles(lore, user);
         assert loreUserRoles.size() == 1;
         assert loreUserRoles.get(0).getRole().getRole().equals(LoreRole.UserRole.MEMBER);
 

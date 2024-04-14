@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreRepository;
 import org.osariusz.lorepaint.loreRole.LoreRole;
@@ -16,6 +17,7 @@ import org.osariusz.lorepaint.loreUserRole.LoreUserRoleRepository;
 import org.osariusz.lorepaint.shared.UserMapService;
 import org.osariusz.lorepaint.shared.UserRolesService;
 import org.osariusz.lorepaint.user.User;
+import org.osariusz.lorepaint.user.UserDTO;
 import org.osariusz.lorepaint.user.UserRepository;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
@@ -47,6 +49,8 @@ public class UserMapServiceTest {
 
     @Mock
     private LoreRoleRepository loreRoleRepository;
+
+    private final ModelMapper modelMapper = new ModelMapper();
 
     private User user1;
     private User user2;
@@ -112,10 +116,8 @@ public class UserMapServiceTest {
             return Collections.emptyList();
         });
 
-        List<LoreUserRole> e = userRolesService.getUserRoles(lore.getId(), user1.getId());
-
-        List<Place> user1Places = userMapService.getAllAccessiblePlaces(lore.getId(), user1.getId());
-        List<Place> user2Places = userMapService.getAllAccessiblePlaces(lore.getId(), user2.getId());
+        List<Place> user1Places = userMapService.getAllAccessiblePlaces(lore, modelMapper.map(user1, UserDTO.class));
+        List<Place> user2Places = userMapService.getAllAccessiblePlaces(lore, modelMapper.map(user2, UserDTO.class));
 
         assert user1Places.isEmpty();
         assert !user2Places.isEmpty();

@@ -1,10 +1,12 @@
 package org.osariusz.lorepaint.shared;
 
+import org.modelmapper.ModelMapper;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreRepository;
 import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.place.PlaceRepository;
 import org.osariusz.lorepaint.user.User;
+import org.osariusz.lorepaint.user.UserDTO;
 import org.osariusz.lorepaint.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,13 +27,15 @@ public class UserMapService {
     @Autowired
     private UserRolesService userRolesService;
 
-    public List<Place> getAllAccessiblePlaces(long loreId, long userId) {
-        Lore lore = loreRepository.getReferenceById(loreId);
-        User user = userRepository.getReferenceById(userId);
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public List<Place> getAllAccessiblePlaces(Lore lore, UserDTO userDTO) {
+        User user = modelMapper.map(userDTO, User.class);
         List<Place> lorePlaces = placeRepository.getAllByLore(lore);
         return lorePlaces.stream().filter((Place place) ->
                 !place.getIsSecret() ||
-                userRolesService.isAdmin(loreId, userId) ||
+                userRolesService.isAdmin(lore, userDTO) ||
                 place.getOwner().equals(user)).toList();
         }
 }
