@@ -1,6 +1,7 @@
 package org.osariusz.lorepaint.lore;
 
 import org.osariusz.lorepaint.shared.UserRolesService;
+import org.osariusz.lorepaint.utils.RoleNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/lore")
-@PreAuthorize("hasAuthority('USER') && @userRolesService.isMember(#lore, @userRolesService.springUserToDTO(principal))")
+@PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && @userRolesService.isMember(#lore, @userRolesService.springUserToDTO(principal))")
 public class LoreController {
     @Autowired
     private LoreService loreService;
@@ -25,7 +26,7 @@ public class LoreController {
     }
 
     @GetMapping("/available")
-    @PreAuthorize("hasAuthority('USER')")
+    //@PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME)")
     @PostFilter("@userRolesService.isMember(filterObject, @userRolesService.springUserToDTO(principal))")
     List<Lore> getLores() {
         return loreService.getAllLores();

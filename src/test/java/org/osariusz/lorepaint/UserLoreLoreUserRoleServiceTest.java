@@ -16,6 +16,7 @@ import org.osariusz.lorepaint.loreUserRole.LoreUserRoleRepository;
 import org.osariusz.lorepaint.shared.UserRolesService;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserRepository;
+import org.osariusz.lorepaint.utils.RoleNames;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class UserLoreLoreUserRoleServiceTest {
         lore.setId(1L);
 
         LoreRole member = new LoreRole();
-        member.setRole(LoreRole.UserRole.MEMBER);
+        member.setRole(RoleNames.LORE_MEMBER_ROLE_NAME);
 
         LoreUserRole loreUserRole = new LoreUserRole();
         loreUserRole.setRole(member);
@@ -57,9 +58,9 @@ public class UserLoreLoreUserRoleServiceTest {
         loreUserRole.setUser(user);
         Mockito.when(loreUserRoleRepository.findAllByLoreAndUser(Mockito.any(), Mockito.any())).thenReturn(List.of(loreUserRole));
 
-        List<LoreUserRole> loreUserRoles = userRolesService.getUserRoles(lore, user);
+        List<LoreUserRole> loreUserRoles = userRolesService.getUserLoreRoles(lore, user);
         assert loreUserRoles.size() == 1;
-        assert loreUserRoles.get(0).getRole().getRole().equals(LoreRole.UserRole.MEMBER);
+        assert loreUserRoles.get(0).getRole().getRole().equals(RoleNames.LORE_MEMBER_ROLE_NAME);
 
     }
 

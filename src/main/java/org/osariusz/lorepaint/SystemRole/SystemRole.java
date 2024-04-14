@@ -4,13 +4,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
-import org.osariusz.lorepaint.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,15 +26,9 @@ public class SystemRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public enum UserRole {
-        USER,
-        ADMIN
-    }
-
     @NotNull(message = "SystemRole string must not be null")
     @Column
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private String role;
 
 
     @NotNull(message = "SystemRole user id cannot be null")
@@ -44,7 +36,7 @@ public class SystemRole {
     private List<SystemUserRole> userRoles;
 
     public GrantedAuthority toAuthority() {
-        return new SimpleGrantedAuthority(role.name());
+        return new SimpleGrantedAuthority(role);
     }
 
 }

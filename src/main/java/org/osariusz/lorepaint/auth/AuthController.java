@@ -1,29 +1,22 @@
 package org.osariusz.lorepaint.auth;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import org.osariusz.lorepaint.SystemRole.SystemRole;
 import org.osariusz.lorepaint.SystemRole.SystemRoleRepository;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRoleRepository;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserRepository;
+import org.osariusz.lorepaint.utils.RoleNames;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.context.DelegatingApplicationListener;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.DelegatingSecurityContextRepository;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -95,7 +88,7 @@ public class AuthController {
 
         SystemUserRole userRole = new SystemUserRole();
         userRole.setUser(user);
-        userRole.setRole(systemRoleRepository.findByRole(SystemRole.UserRole.USER));
+        userRole.setRole(systemRoleRepository.findByRole(RoleNames.SYSTEM_USER_ROLE_NAME));
         userRole.setGranted_at(registerTime);
 
         user.setSystemUserRoles(new ArrayList<>(List.of(userRole)));

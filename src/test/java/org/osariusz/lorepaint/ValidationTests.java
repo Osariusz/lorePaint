@@ -1,7 +1,6 @@
 package org.osariusz.lorepaint;
 
 import jakarta.validation.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,6 +20,7 @@ import org.osariusz.lorepaint.mapUpdate.MapUpdateRepository;
 import org.osariusz.lorepaint.mapUpdate.MapUpdateService;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRoleService;
 import org.osariusz.lorepaint.user.User;
+import org.osariusz.lorepaint.utils.RoleNames;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 
@@ -58,14 +58,14 @@ class ValidationTests {
 
     public void memberRoleSetup() {
         LoreRole member = new LoreRole();
-        member.setRole(LoreRole.UserRole.MEMBER);
-        Mockito.when(loreRoleRepository.findByRole(LoreRole.UserRole.MEMBER)).thenReturn(member);
+        member.setRole(RoleNames.LORE_MEMBER_ROLE_NAME);
+        Mockito.when(loreRoleRepository.findByRole(RoleNames.LORE_MEMBER_ROLE_NAME)).thenReturn(member);
     }
 
     public void gmRoleSetup() {
         LoreRole gm = new LoreRole();
-        gm.setRole(LoreRole.UserRole.GM);
-        Mockito.when(loreRoleRepository.findByRole(LoreRole.UserRole.GM)).thenReturn(gm);
+        gm.setRole(RoleNames.LORE_GM_ROLE_NAME);
+        Mockito.when(loreRoleRepository.findByRole(RoleNames.LORE_GM_ROLE_NAME)).thenReturn(gm);
     }
 
     @Test
@@ -124,7 +124,7 @@ class ValidationTests {
         loreUserRole.setUser(new User());
         loreUserRole.setLore(new Lore());
         assertThrows(ConstraintViolationException.class, () -> {roleService.validateRole(loreUserRole);});
-        loreUserRole.setRole(loreRoleRepository.findByRole(LoreRole.UserRole.GM));
+        loreUserRole.setRole(loreRoleRepository.findByRole(RoleNames.LORE_GM_ROLE_NAME));
         assertDoesNotThrow(() -> {roleService.validateRole(loreUserRole);});
     }
 
