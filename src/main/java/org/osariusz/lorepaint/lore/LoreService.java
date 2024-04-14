@@ -6,6 +6,7 @@ import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,6 +27,10 @@ public class LoreService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lore not found");
         }
         return lore;
+    }
+
+    public List<Lore> getAllLores() {
+        return loreRepository.findAll();
     }
 
     public void validateLore(Lore lore) {
