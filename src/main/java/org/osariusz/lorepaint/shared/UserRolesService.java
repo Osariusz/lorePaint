@@ -16,6 +16,7 @@ import org.osariusz.lorepaint.utils.RoleNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -47,6 +48,11 @@ public class UserRolesService {
     public UserDTO springUserToDTO(org.springframework.security.core.userdetails.User springUser) {
         User user = userRepository.findByUsername(springUser.getUsername()).orElseThrow();
         return modelMapper.map(user, UserDTO.class);
+    }
+
+    public User principalToUser(Principal principal) {
+        User user = userRepository.findByUsername(principal.getName()).orElseThrow();
+        return modelMapper.map(user, User.class);
     }
 
     public List<LoreUserRole> getUserLoreRoles(Lore lore, User user) {

@@ -22,9 +22,6 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @NotNull(message = "Username cannot be null")
     @NotBlank(message = "Username cannot be blank")
     @Column

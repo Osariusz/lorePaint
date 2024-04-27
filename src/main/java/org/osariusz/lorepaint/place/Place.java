@@ -1,5 +1,6 @@
 package org.osariusz.lorepaint.place;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,6 +12,7 @@ import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
 import org.osariusz.lorepaint.user.User;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,11 +33,11 @@ public class Place {
 
     @NotNull(message = "X must not be null")
     @Column
-    private Long x;
+    private double x;
 
     @NotNull(message = "Y must not be null")
     @Column
-    private Long y;
+    private double y;
 
     @Column
     private LocalDateTime created_at;
@@ -59,7 +61,9 @@ public class Place {
     @JoinColumn(name="owner_id", nullable = false)
     private User owner;
 
-    @NotEmpty(message = "Place must have at least one place update")
-    @OneToMany(mappedBy = "place")
+
+    @OneToMany(mappedBy = "place",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    //@NotEmpty(message = "Place must have at least one place update")
+    //@JsonManagedReference
     private List<PlaceUpdate> placeUpdates;
 }

@@ -2,6 +2,9 @@ package org.osariusz.lorepaint.config;
 
 import org.modelmapper.ModelMapper;
 import org.osariusz.lorepaint.auth.CustomUserDetailsService;
+import org.osariusz.lorepaint.place.Place;
+import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
+import org.osariusz.lorepaint.shared.PlaceCreateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -80,7 +83,12 @@ class SecurityConfiguration {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.typeMap(PlaceCreateDTO.class, PlaceUpdate.class).addMappings(mapper -> {
+            mapper.map(PlaceCreateDTO::getCreationLoreDate,
+                    PlaceUpdate::setLore_date);
+        });
+        return modelMapper;
     }
 
 }
