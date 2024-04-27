@@ -58,7 +58,7 @@ class SecurityConfiguration {
 
         http
                     .csrf(csrf -> csrf
-                            .ignoringRequestMatchers("/public/login")
+                            .ignoringRequestMatchers("/public/login") // TODO: Secure the login endpoint from csrf
                             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                             .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
                     )
