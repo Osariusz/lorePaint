@@ -49,7 +49,7 @@ public class PlaceUpdatingController {
         PlaceUpdate initialPlaceUpdate = modelMapper.map(placeCreateDTO, PlaceUpdate.class);
         initialPlaceUpdate.setPlace(place);
         place.setPlaceUpdates(new ArrayList<>(List.of(initialPlaceUpdate)));
-        placeService.savePlaceWithUpdate(place, initialPlaceUpdate);
+        placeService.savePlace(place);
     }
 
     @PostMapping("/create")

@@ -38,11 +38,4 @@ public class PlaceService {
         validatePlace(place);
         placeRepository.save(place);
     }
-
-    public void savePlaceWithUpdate(Place place, PlaceUpdate placeUpdate) {
-
-        placeRepository.save(place);
-        //placeUpdateRepository.save(placeUpdate);
-    }
-
 }

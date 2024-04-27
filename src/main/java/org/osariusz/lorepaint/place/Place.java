@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
 import org.osariusz.lorepaint.user.User;
