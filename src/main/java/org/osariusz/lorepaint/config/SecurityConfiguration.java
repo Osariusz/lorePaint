@@ -105,6 +105,10 @@ class SecurityConfiguration {
             mapper.map(PlaceCreateDTO::getCreationLoreDate,
                     PlaceUpdate::setLore_date);
         });
+        modelMapper.typeMap(PlaceCreateDTO.class, Place.class).addMappings(mapper -> {
+            mapper.map(PlaceCreateDTO::getPoint,
+                    Place::setPoint);
+        });
         return modelMapper;
     }
 

@@ -3,6 +3,7 @@ package org.osariusz.lorepaint.shared;
 import lombok.Getter;
 import lombok.Setter;
 import org.osariusz.lorepaint.user.User;
+import org.springframework.data.geo.Point;
 
 import java.awt.*;
 import java.sql.Timestamp;

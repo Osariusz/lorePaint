@@ -12,6 +12,7 @@ import org.hibernate.annotations.Cascade;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
 import org.osariusz.lorepaint.user.User;
+import org.springframework.data.geo.Point;
 
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -67,4 +68,9 @@ public class Place {
     //TODO: fix @NotEmpty(message = "Place must have at least one place update")
     //@JsonManagedReference
     private List<PlaceUpdate> placeUpdates;
+
+    public void setPoint(Point point) {
+        setX(point.getX());
+        setY(point.getY());
+    }
 }
