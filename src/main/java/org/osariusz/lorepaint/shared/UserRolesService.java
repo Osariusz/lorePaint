@@ -77,6 +77,11 @@ public class UserRolesService {
                 loreUserRole.getRole().equals(loreRoleRepository.findByRole(RoleNames.LORE_GM_ROLE_NAME)));
     }
 
+    public boolean isMember(long loreId, UserDTO userDTO) {
+        Lore lore = loreRepository.findById(loreId);
+        return isMember(lore, userDTO);
+    }
+
     public boolean isMember(Lore lore, UserDTO userDTO) {
         User user = modelMapper.map(userDTO, User.class);
         if(isAdmin(userDTO)) {

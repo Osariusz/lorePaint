@@ -13,14 +13,6 @@ import org.springframework.web.util.HtmlUtils;
 @RequestMapping("/api")
 public class GreetingController {
 
-    @Autowired
-    SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/broadcast")
-    @SendTo("/topic/reply")
-    public String greeting(@Payload String message) throws Exception {
-        messagingTemplate.convertAndSend("/api/topic/reply", (message));
-        return message;
-    }
 
 }
