@@ -1,6 +1,7 @@
 package org.osariusz.lorepaint.lore;
 
 import org.osariusz.lorepaint.shared.UserRolesService;
+import org.osariusz.lorepaint.user.UserDTO;
 import org.osariusz.lorepaint.utils.RoleNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -38,12 +39,14 @@ public class LoreController {
 
     @MessageMapping("/{id}/set_mouse")
     @SendTo("/{id}/get_mouse")
-    @PreAuthorize("@userRolesService.isMember(#lore, @userRolesService.springUserToDTO(principal))")
-    //@PreAuthorize("true")
+    @PreAuthorize("true") //custom authorization in method
     public String mousePositions(@DestinationVariable("id") long lore, @Payload String message, Principal principal) throws Exception {
-        //messagingTemplate.convertAndSend("/api/topic/reply", (message));
-        Authentication a = SecurityContextHolder.getContext().getAuthentication();
-        return message;
+        UserDTO userDTO = userRolesService.principalToDTO(principal);
+        if(userRolesService.isUser(userDTO) && userRolesService.isMember(lore, userDTO)) {
+            //messagingTemplate.convertAndSend("/api/topic/reply", (message));
+            return message;
+        }
+        return "403 forbidden";
     }
 
     @GetMapping("/available")

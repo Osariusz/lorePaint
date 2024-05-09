@@ -9,6 +9,7 @@ import org.osariusz.lorepaint.auth.CustomUserDetailsService;
 import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
 import org.osariusz.lorepaint.shared.PlaceCreateDTO;
+import org.osariusz.lorepaint.user.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,6 +38,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
