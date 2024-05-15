@@ -8,6 +8,7 @@ import org.osariusz.lorepaint.lore.LoreRepository;
 import org.osariusz.lorepaint.loreRole.LoreRoleRepository;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRoleRepository;
+import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRoleRepository;
 import org.osariusz.lorepaint.user.User;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 @Service
@@ -109,6 +111,16 @@ public class UserRolesService {
         loreUserRoles = loreUserRoles.stream().filter(userRole -> userRole.getRole().getRole().equals(RoleNames.LORE_MEMBER_ROLE_NAME)).toList();
         return !loreUserRoles.isEmpty();
 
+    }
+
+    public boolean canSeePlace(Place place, UserDTO userDTO) {
+        return !place.getIsSecret() || canModifyPlace(place, userDTO);
+    }
+    public boolean canModifyPlace(Place place, UserDTO userDTO) {
+        return
+                (Objects.equals(place.getOwner().getUsername(), userDTO.getUsername()) && isMember(place.getLore(), userDTO)) ||
+                        isGM(place.getLore(), userDTO) ||
+                        isAdmin(userDTO);
     }
 
 }

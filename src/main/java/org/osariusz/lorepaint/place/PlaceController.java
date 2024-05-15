@@ -1,25 +1,16 @@
-package org.osariusz.lorepaint.shared;
+package org.osariusz.lorepaint.place;
 
 import org.modelmapper.ModelMapper;
-import org.osariusz.lorepaint.place.Place;
-import org.osariusz.lorepaint.place.PlaceService;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
-import org.osariusz.lorepaint.placeUpdate.PlaceUpdateService;
+import org.osariusz.lorepaint.shared.UserRolesService;
 import org.osariusz.lorepaint.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.util.HtmlUtils;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -27,8 +18,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/place")
-@PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && @userRolesService.isMember(#lore, @userRolesService.springUserToDTO(principal))")
-public class PlaceUpdatingController {
+@PreAuthorize(
+        "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && " +
+        "@userRolesService.isMember(#lore, @userRolesService.springUserToDTO(principal))"
+)
+public class PlaceController {
     @Autowired
     private UserRolesService userRolesService;
 
@@ -36,13 +30,7 @@ public class PlaceUpdatingController {
     private PlaceService placeService;
 
     @Autowired
-    private PlaceUpdateService placeUpdateService;
-
-    @Autowired
     private ModelMapper modelMapper;
-
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
 
     public void createSavePlace(PlaceCreateDTO placeCreateDTO) {
         Place place = modelMapper.map(placeCreateDTO, Place.class);

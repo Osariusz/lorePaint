@@ -43,7 +43,7 @@ public class LoreController {
     public String mousePositions(@DestinationVariable("id") long lore, @Payload String message, Principal principal) throws Exception {
         UserDTO userDTO = userRolesService.principalToDTO(principal);
         if(userRolesService.isUser(userDTO) && userRolesService.isMember(lore, userDTO)) {
-            //messagingTemplate.convertAndSend("/api/topic/reply", (message));
+            messagingTemplate.convertAndSend("/api/topic/reply", (message));
             return message;
         }
         return "403 forbidden";
