@@ -45,7 +45,7 @@ public class UserLoreLoreUserRoleServiceTest {
     @Test
     public void GetRolesTest() {
         User user = new User();
-        user.setId(1L);
+        user.setUsername("1");
         Lore lore = new Lore();
         lore.setId(1L);
 

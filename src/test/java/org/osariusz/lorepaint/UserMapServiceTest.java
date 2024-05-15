@@ -24,6 +24,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
@@ -51,7 +52,9 @@ public class UserMapServiceTest {
     @Mock
     private LoreRoleRepository loreRoleRepository;
 
-    private final ModelMapper modelMapper = new ModelMapper();
+    @Spy
+    @InjectMocks
+    private ModelMapper modelMapper;
 
     private User user1;
     private User user2;
@@ -75,11 +78,11 @@ public class UserMapServiceTest {
         Mockito.when(loreRoleRepository.findByRole(RoleNames.LORE_GM_ROLE_NAME)).thenReturn(gm);
 
         user1 = new User();
-        user1.setId(1L);
+        user1.setUsername("1");
         user2 = new User();
-        user2.setId(2L);
+        user2.setUsername("2");
         user3 = new User();
-        user3.setId(3L);
+        user3.setUsername("3");
 
         lore = new Lore();
         lore.setId(1L);
@@ -99,9 +102,9 @@ public class UserMapServiceTest {
         secretPlace.setLore(lore);
         secretPlace.setOwner(user3);
 
-        Mockito.when(userRepository.getReferenceById(user1.getId())).thenReturn(user1);
-        Mockito.when(userRepository.getReferenceById(user2.getId())).thenReturn(user2);
-        Mockito.when(loreRepository.getReferenceById(lore.getId())).thenReturn(lore);
+        //Mockito.when(userRepository.findByUsername(user1.getUsername())).thenReturn(Optional.ofNullable(user1));
+        //Mockito.when(userRepository.findByUsername(user2.getUsername())).thenReturn(Optional.ofNullable(user2));
+        //Mockito.when(loreRepository.getReferenceById(lore.getId())).thenReturn(lore);
         Mockito.when(placeRepository.findAllByLore(Mockito.any())).thenReturn(List.of(secretPlace));
     }
 
@@ -109,9 +112,9 @@ public class UserMapServiceTest {
     public void NoVisiblePlaces() {
         Mockito.when(loreUserRoleRepository.findAllByLoreAndUser(Mockito.any(), Mockito.any())).thenAnswer(invocation -> {
             User user = (User) invocation.getArguments()[1];
-            if (user.getId().equals(user1.getId())) {
+            if (user.getUsername().equals(user1.getUsername())) {
                 return List.of(loreUserRole1);
-            } else if (user.getId().equals(user2.getId())) {
+            } else if (user.getUsername().equals(user2.getUsername())) {
                 return List.of(loreUserRole2);
             }
             return Collections.emptyList();
