@@ -32,7 +32,7 @@ public class UserMapService {
 
     public List<Place> getAllAccessiblePlaces(Lore lore, UserDTO userDTO) {
         User user = modelMapper.map(userDTO, User.class);
-        List<Place> lorePlaces = placeRepository.getAllByLore(lore);
+        List<Place> lorePlaces = placeRepository.findAllByLore(lore);
         return lorePlaces.stream().filter((Place place) ->
                 !place.getIsSecret() ||
                 userRolesService.isGM(lore, userDTO) ||

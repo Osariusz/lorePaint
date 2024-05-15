@@ -102,7 +102,7 @@ public class UserMapServiceTest {
         Mockito.when(userRepository.getReferenceById(user1.getId())).thenReturn(user1);
         Mockito.when(userRepository.getReferenceById(user2.getId())).thenReturn(user2);
         Mockito.when(loreRepository.getReferenceById(lore.getId())).thenReturn(lore);
-        Mockito.when(placeRepository.getAllByLore(Mockito.any())).thenReturn(List.of(secretPlace));
+        Mockito.when(placeRepository.findAllByLore(Mockito.any())).thenReturn(List.of(secretPlace));
     }
 
     @Test

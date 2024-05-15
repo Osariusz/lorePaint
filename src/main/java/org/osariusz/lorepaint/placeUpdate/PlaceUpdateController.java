@@ -3,6 +3,8 @@ package org.osariusz.lorepaint.placeUpdate;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.place.Place;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +28,9 @@ public class PlaceUpdateController {
                     "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&" +
                     "@userRolesService.canModifyPlace(#placeUpdateDTO.place, @userRolesService.springUserToDTO(principal))"
     )
-    public void updatePlace(@RequestBody PlaceUpdateDTO placeUpdateDTO) {
+    public ResponseEntity<String> updatePlace(@RequestBody PlaceUpdateDTO placeUpdateDTO) {
         placeUpdateService.saveFromPlaceUpdateDTO(placeUpdateDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{place}/allUpdates")

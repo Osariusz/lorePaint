@@ -52,7 +52,7 @@ public class LoreController {
     @GetMapping("/available")
     @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME)")
     @PostFilter("@userRolesService.isMember(filterObject, @userRolesService.springUserToDTO(principal))")
-    List<Lore> getLores() {
+    public List<Lore> getLores() {
         return loreService.getAllLores();
     }
 }
