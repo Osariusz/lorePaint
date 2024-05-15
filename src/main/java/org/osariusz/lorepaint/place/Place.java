@@ -1,13 +1,12 @@
 package org.osariusz.lorepaint.place;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
@@ -21,6 +20,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Getter
+@Setter
 @Entity
 @Table(name = "places")
 public class Place {
@@ -51,13 +52,16 @@ public class Place {
     private LocalDateTime removed_at;
 
     @Column
+    @NotNull(message = "Place secret status must not be null")
     private Boolean isSecret;
 
+    @JsonIgnore
     @NotNull(message = "Lore id must not be null")
     @ManyToOne
     @JoinColumn(name="lore_id", nullable = false)
     private Lore lore;
 
+    @JsonIgnore
     @NotNull(message = "Owner id must not be null")
     @ManyToOne
     @JoinColumn(name="owner_id", nullable = false)

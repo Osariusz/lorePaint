@@ -2,6 +2,7 @@ package org.osariusz.lorepaint.placeUpdate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -38,6 +39,7 @@ public class PlaceUpdate {
     private LocalDateTime lore_date;
 
     //TODO: fix cascading @NotNull(message = "Place update place id must not be null")
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="place_id")
     //@JsonBackReference

@@ -33,7 +33,7 @@ public class LoreController {
     SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/{id}")
-    Lore getLore(@PathVariable("id") Lore lore) {
+    public Lore getLore(@PathVariable("id") Lore lore) {
         return lore;
     }
 

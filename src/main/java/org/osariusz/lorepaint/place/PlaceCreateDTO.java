@@ -14,4 +14,5 @@ public class PlaceCreateDTO {
     private long loreId;
     private LocalDateTime creationLoreDate;
     private Point point;
+    private Boolean isSecret;
 }

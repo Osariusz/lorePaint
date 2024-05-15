@@ -1,4 +1,5 @@
 package org.osariusz.lorepaint.mapUpdate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -38,6 +39,7 @@ public class MapUpdate {
     @Column
     private LocalDateTime created_at;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name="map_id", nullable = false)
     private Map map;
