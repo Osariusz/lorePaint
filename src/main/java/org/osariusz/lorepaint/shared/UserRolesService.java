@@ -114,11 +114,7 @@ public class UserRolesService {
     }
 
     public boolean canSeePlace(Place place, UserDTO userDTO) {
-        boolean t = (isMember(place.getLore(), userDTO) && !place.getIsSecret()) || canModifyPlace(place, userDTO);;
-        if(!t) {
-            int h = 0;
-        }
-        return t;
+        return (isMember(place.getLore(), userDTO) && !place.getIsSecret()) || canModifyPlace(place, userDTO);
     }
     public boolean canModifyPlace(Place place, UserDTO userDTO) {
         return

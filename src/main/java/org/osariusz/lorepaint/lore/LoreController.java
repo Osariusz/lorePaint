@@ -1,5 +1,6 @@
 package org.osariusz.lorepaint.lore;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.osariusz.lorepaint.shared.UserRolesService;
 import org.osariusz.lorepaint.user.UserDTO;
 import org.osariusz.lorepaint.utils.RoleNames;
@@ -38,12 +39,15 @@ public class LoreController {
     }
 
     @MessageMapping("/{id}/set_mouse")
-    @SendTo("/{id}/get_mouse")
+    //@SendTo("/{id}/get_mouse")
     @PreAuthorize("true") //custom authorization in method
     public String mousePositions(@DestinationVariable("id") long lore, @Payload String message, Principal principal) throws Exception {
         UserDTO userDTO = userRolesService.principalToDTO(principal);
         if(userRolesService.isUser(userDTO) && userRolesService.isMember(lore, userDTO)) {
-            messagingTemplate.convertAndSend("/api/topic/reply", (message));
+            ObjectMapper objectMapper = new ObjectMapper();
+            double[] coordinates = objectMapper.readValue(message, double[].class);
+            MouseCursorDTO mouseCursorDTO = new MouseCursorDTO(principal.getName(), coordinates);
+            messagingTemplate.convertAndSend("/api/lore/"+lore+"/get_mouse", mouseCursorDTO);
             return message;
         }
         return "403 forbidden";
