@@ -47,7 +47,7 @@ public class LoreController {
             ObjectMapper objectMapper = new ObjectMapper();
             double[] coordinates = objectMapper.readValue(message, double[].class);
             MouseCursorDTO mouseCursorDTO = new MouseCursorDTO(principal.getName(), coordinates);
-            messagingTemplate.convertAndSend("/api/lore/"+lore+"/get_mouse", mouseCursorDTO);
+            messagingTemplate.convertAndSend(this.getClass().getAnnotation(RequestMapping.class).value()[0]+"/"+lore+"/get_mouse", mouseCursorDTO);
             return message;
         }
         return "403 forbidden";
