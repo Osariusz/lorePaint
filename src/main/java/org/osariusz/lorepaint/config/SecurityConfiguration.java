@@ -45,6 +45,9 @@ class SecurityConfiguration {
         this.customUserDetailsService = customUserDetailsService;
     }
 
+    @Value("${FRONT_URL}")
+    private String FRONT_URL;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -57,7 +60,7 @@ class SecurityConfiguration {
                     .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                     .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+                    configuration.setAllowedOrigins(List.of(FRONT_URL));
                     configuration.setAllowedMethods(List.of("*"));
                     configuration.setAllowedHeaders(List.of("*"));
                     configuration.setAllowCredentials(true);
