@@ -14,6 +14,7 @@ services:
       - LORE_PAINT_DB_PORT=${LORE_PAINT_DB_PORT}
       - LORE_PAINT_DB_USER=${LORE_PAINT_DB_USER}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-prod}
+      - FRONT_URL=${FRONT_URL}
     depends_on:
       db:
         condition: service_healthy
