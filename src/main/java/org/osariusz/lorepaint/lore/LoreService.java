@@ -1,8 +1,13 @@
 package org.osariusz.lorepaint.lore;
 
 import jakarta.validation.*;
+import org.modelmapper.ModelMapper;
+import org.osariusz.lorepaint.loreRole.LoreRole;
+import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
+import org.osariusz.lorepaint.loreUserRole.LoreUserRoleService;
 import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.user.User;
+import org.osariusz.lorepaint.utils.RoleNames;
 import org.osariusz.lorepaint.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +15,7 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +25,13 @@ public class LoreService {
     private LoreRepository loreRepository;
 
     @Autowired
+    private LoreUserRoleService loreUserRoleService;
+
+    @Autowired
     private Validator validator;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     public Lore getLoreById(Long id) {
         Lore lore = loreRepository.findById(id).orElse(null);
@@ -35,6 +47,13 @@ public class LoreService {
 
     public void validateLore(Lore lore) {
         Validation.validate(lore, validator);
+    }
+
+    public Lore createLore(LoreCreateDTO loreCreateDTO, User creator) {
+        Lore lore = modelMapper.map(loreCreateDTO, Lore.class);
+        LoreUserRole loreUserRole = loreUserRoleService.assignLoreUserRole(creator, lore, RoleNames.LORE_GM_ROLE_NAME);
+        saveLore(lore);
+        return lore;
     }
 
     public void saveLore(Lore lore) {

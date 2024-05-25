@@ -5,6 +5,8 @@ import org.osariusz.lorepaint.shared.UserRolesService;
 import org.osariusz.lorepaint.user.UserDTO;
 import org.osariusz.lorepaint.utils.RoleNames;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -36,6 +38,11 @@ public class LoreController {
     @GetMapping("/{id}")
     public Lore getLore(@PathVariable("id") Lore lore) {
         return lore;
+    }
+
+    public ResponseEntity<Lore> create(@RequestBody LoreCreateDTO loreCreateDTO, Principal principal) {
+        Lore lore = loreService.createLore(loreCreateDTO, userRolesService.principalToUser(principal));
+        return new ResponseEntity<>(lore, HttpStatus.CREATED);
     }
 
     @MessageMapping("/{id}/set_mouse")
