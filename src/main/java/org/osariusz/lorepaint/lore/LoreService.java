@@ -58,9 +58,11 @@ public class LoreService {
         Lore lore = modelMapper.map(loreCreateDTO, Lore.class);
         lore.setPlaces(new ArrayList<>());
         lore.setMap(mapService.createMap());
-        LoreUserRole loreUserRole = loreUserRoleService.assignLoreUserRole(creator, lore, RoleNames.LORE_GM_ROLE_NAME);
+        LoreUserRole loreGMRole = loreUserRoleService.assignLoreUserRole(creator, lore, RoleNames.LORE_GM_ROLE_NAME);
+        LoreUserRole loreMemberRole = loreUserRoleService.assignLoreUserRole(creator, lore, RoleNames.LORE_MEMBER_ROLE_NAME);
         saveLore(lore);
-        loreUserRoleService.saveRole(loreUserRole);
+        loreUserRoleService.saveRole(loreGMRole);
+        loreUserRoleService.saveRole(loreMemberRole);
         return lore;
     }
 
