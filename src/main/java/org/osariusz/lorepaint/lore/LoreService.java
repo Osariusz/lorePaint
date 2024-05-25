@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.osariusz.lorepaint.loreRole.LoreRole;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRoleService;
+import org.osariusz.lorepaint.map.MapService;
 import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.utils.RoleNames;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +28,9 @@ public class LoreService {
 
     @Autowired
     private LoreUserRoleService loreUserRoleService;
+
+    @Autowired
+    private MapService mapService;
 
     @Autowired
     private Validator validator;
@@ -51,8 +56,11 @@ public class LoreService {
 
     public Lore createLore(LoreCreateDTO loreCreateDTO, User creator) {
         Lore lore = modelMapper.map(loreCreateDTO, Lore.class);
+        lore.setPlaces(new ArrayList<>());
+        lore.setMap(mapService.createMap());
         LoreUserRole loreUserRole = loreUserRoleService.assignLoreUserRole(creator, lore, RoleNames.LORE_GM_ROLE_NAME);
         saveLore(lore);
+        loreUserRoleService.saveRole(loreUserRole);
         return lore;
     }
 

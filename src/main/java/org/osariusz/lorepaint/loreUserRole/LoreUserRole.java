@@ -34,7 +34,6 @@ public class LoreUserRole {
     private User user;
 
     @JsonIgnore
-    @NotNull(message = "LoreUserRole lore id cannot be null")
     @ManyToOne
     @JoinColumn(name="lore_id", nullable = false)
     private Lore lore;

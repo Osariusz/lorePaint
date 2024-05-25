@@ -31,7 +31,6 @@ public class LoreUserRoleService {
         loreUserRole.setUser(user);
         loreUserRole.setLore(lore);
         loreUserRole.setRole(loreRoleService.getRoleByName(role));
-        saveRole(loreUserRole);
         return loreUserRole;
     }
 

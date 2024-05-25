@@ -46,14 +46,13 @@ public class Lore {
     private LocalDateTime removed_at;
 
     @JsonIgnore
-    @NotNull(message = "Map update list must not be null")
+    @NotNull(message = "Map must not be null")
     @OneToOne
     @JoinColumn(name="map_id", nullable = false)
     private Map map;
 
     @JsonIgnore
     @OneToMany(mappedBy = "lore")
-    @NotNull(message = "LoreUserRole list must not be null")
     private List<LoreUserRole> loreUserRoles;
 
     @JsonIgnore

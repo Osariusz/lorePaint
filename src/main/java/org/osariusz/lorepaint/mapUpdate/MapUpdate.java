@@ -30,11 +30,11 @@ public class MapUpdate {
 
     @NotNull(message = "X coordinate must not be null")
     @Column
-    private Long x;
+    private double x;
 
     @NotNull(message = "Y coordinate must not be null")
     @Column
-    private Long y;
+    private double y;
 
     @Column
     private LocalDateTime created_at;
