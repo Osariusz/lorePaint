@@ -41,6 +41,7 @@ public class LoreController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME)")
     public ResponseEntity<Lore> create(@RequestBody LoreCreateDTO loreCreateDTO, Principal principal) {
         Lore lore = loreService.createLore(loreCreateDTO, userRolesService.principalToUser(principal));
         return new ResponseEntity<>(lore, HttpStatus.CREATED);
