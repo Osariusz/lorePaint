@@ -48,7 +48,11 @@ public class PlaceController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createPlace(@RequestBody PlaceCreateDTO placeCreateDTO) {
+    @PreAuthorize(
+            "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && " +
+            "@userRolesService.isMember(#placeCreateDTO.loreId, @userRolesService.springUserToDTO(principal))"
+    )
+    public ResponseEntity<String> createPlace(@RequestBody PlaceCreateDTO placeCreateDTO, Principal principal) {
         createSavePlace(placeCreateDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
