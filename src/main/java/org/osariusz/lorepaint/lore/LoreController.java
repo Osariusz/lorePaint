@@ -40,6 +40,7 @@ public class LoreController {
         return lore;
     }
 
+    @PostMapping("/create")
     public ResponseEntity<Lore> create(@RequestBody LoreCreateDTO loreCreateDTO, Principal principal) {
         Lore lore = loreService.createLore(loreCreateDTO, userRolesService.principalToUser(principal));
         return new ResponseEntity<>(lore, HttpStatus.CREATED);
