@@ -1,7 +1,9 @@
 package org.osariusz.lorepaint.lore;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import org.osariusz.lorepaint.shared.UserRolesService;
+import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserDTO;
 import org.osariusz.lorepaint.utils.RoleNames;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -45,6 +49,22 @@ public class LoreController {
     public ResponseEntity<Lore> create(@RequestBody LoreCreateDTO loreCreateDTO, Principal principal) {
         Lore lore = loreService.createLore(loreCreateDTO, userRolesService.principalToUser(principal));
         return new ResponseEntity<>(lore, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{id}/add_user")
+    @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && @userRolesService.isGM(#lore, @userRolesService.springUserToDTO(principal))")
+    public ResponseEntity<String> addUser(@PathVariable("id") Lore lore, @RequestBody User user) {
+        try {
+            loreService.assignSaveLoreUserRole(user, lore, RoleNames.LORE_MEMBER_ROLE_NAME);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (UsernameNotFoundException ex) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+        catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>("Can't add role for that user", HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @MessageMapping("/{id}/set_mouse")

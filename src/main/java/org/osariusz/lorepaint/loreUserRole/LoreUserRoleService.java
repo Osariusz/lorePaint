@@ -7,6 +7,7 @@ import org.osariusz.lorepaint.loreRole.LoreRoleService;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,15 @@ public class LoreUserRoleService {
         Validation.validate(loreUserRole, validator);
     }
 
+    public boolean userHasLoreRole(Lore lore, User user, String role) {
+        LoreRole loreRole = loreRoleService.getRoleByName(role);
+        return loreUserRoleRepository.existsLoreUserRoleByLoreAndUserAndRole(lore, user, loreRole);
+    }
+
     public LoreUserRole assignLoreUserRole(User user, Lore lore, String role) {
+        if(userHasLoreRole(lore, user, role)) {
+            throw new IllegalArgumentException("User already has that role");
+        }
         LoreUserRole loreUserRole = new LoreUserRole();
         loreUserRole.setUser(user);
         loreUserRole.setLore(lore);

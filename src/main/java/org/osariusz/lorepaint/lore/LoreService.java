@@ -8,11 +8,13 @@ import org.osariusz.lorepaint.loreUserRole.LoreUserRoleService;
 import org.osariusz.lorepaint.map.MapService;
 import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.user.User;
+import org.osariusz.lorepaint.user.UserService;
 import org.osariusz.lorepaint.utils.RoleNames;
 import org.osariusz.lorepaint.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,6 +30,9 @@ public class LoreService {
 
     @Autowired
     private LoreUserRoleService loreUserRoleService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private MapService mapService;
@@ -64,6 +69,14 @@ public class LoreService {
         loreUserRoleService.saveRole(loreGMRole);
         loreUserRoleService.saveRole(loreMemberRole);
         return lore;
+    }
+
+    public void assignSaveLoreUserRole(User user, Lore lore, String roleName) {
+        if(!userService.userExists(user.getUsername())) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        LoreUserRole loreUserRole = loreUserRoleService.assignLoreUserRole(user, lore, roleName);
+        loreUserRoleService.saveRole(loreUserRole);
     }
 
     public void saveLore(Lore lore) {
