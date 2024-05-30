@@ -1,5 +1,6 @@
 package org.osariusz.lorepaint.place;
 
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +62,15 @@ public class PlaceController {
     @GetMapping("/all/{id}")
     @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME)")
     @PostFilter("@userRolesService.canSeePlace(filterObject, @userRolesService.springUserToDTO(principal))")
-    public List<Place> getLores(@PathVariable("id") Lore lore) {
+    public List<Place> getAll(@PathVariable("id") Lore lore) {
         return placeService.getAllPlaces(lore);
+    }
+
+    @PostMapping("/all_before/{id}")
+    @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME)")
+    @PostFilter("@userRolesService.canSeePlace(filterObject, @userRolesService.springUserToDTO(principal))")
+    public List<Place> getAllPlacesForDate(@PathVariable("id") Lore lore, @Valid @RequestBody PlaceDateGetDTO dateInfo) {
+        List<Place> h = placeService.getAllPlacesCreatedBefore(lore, dateInfo.getDate());
+        return h;
     }
 }

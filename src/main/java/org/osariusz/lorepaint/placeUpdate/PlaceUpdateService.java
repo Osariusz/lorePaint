@@ -8,6 +8,7 @@ import org.osariusz.lorepaint.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -33,6 +34,11 @@ public class PlaceUpdateService {
     public void savePlaceUpdate(PlaceUpdate placeUpdate) {
         validatePlaceUpdate(placeUpdate);
         placeUpdateRepository.save(placeUpdate);
+    }
+
+    public List<PlaceUpdate> getAllPlaceUpdatesBefore(Place place, LocalDateTime localDateTime) {
+        List<PlaceUpdate> allUpdates = getAllPlaceUpdates(place);
+        return allUpdates.stream().filter(placeUpdate -> !placeUpdate.getLore_date().isAfter(localDateTime)).toList();
     }
 
     public List<PlaceUpdate> getAllPlaceUpdates(Place place) {
