@@ -8,5 +8,5 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class DateGetDTO {
-    private LocalDateTime date;
+    private LocalDateTime lore_date;
 }

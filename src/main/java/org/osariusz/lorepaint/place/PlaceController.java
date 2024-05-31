@@ -82,6 +82,6 @@ public class PlaceController {
     @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME)")
     @PostFilter("@userRolesService.canSeePlace(filterObject, @userRolesService.springUserToDTO(principal))")
     public List<Place> getAllPlacesForDate(@PathVariable("id") Lore lore, @Valid @RequestBody DateGetDTO dateInfo) {
-        return placeService.getAllPlacesCreatedBefore(lore, dateInfo.getDate());
+        return placeService.getAllPlacesCreatedBefore(lore, dateInfo.getLore_date());
     }
 }

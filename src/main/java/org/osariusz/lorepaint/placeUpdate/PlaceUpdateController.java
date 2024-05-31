@@ -42,7 +42,7 @@ public class PlaceUpdateController {
             "@userRolesService.canSeePlace(#place, @userRolesService.springUserToDTO(principal))"
     )
     public PlaceUpdateDTO getLastPlaceUpdate(@PathVariable("id") Place place, @RequestBody DateGetDTO placeDateGetDTO) {
-        return modelMapper.map(placeUpdateService.getLastPlaceUpdate(place, placeDateGetDTO.getDate()), PlaceUpdateDTO.class);
+        return modelMapper.map(placeUpdateService.getLastPlaceUpdate(place, placeDateGetDTO.getLore_date()), PlaceUpdateDTO.class);
     }
 
     @GetMapping("/{place}/allUpdates")
