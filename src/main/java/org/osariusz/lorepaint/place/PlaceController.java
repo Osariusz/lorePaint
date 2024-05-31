@@ -60,8 +60,7 @@ public class PlaceController {
     }
 
     @GetMapping("/all/{id}")
-    @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME)")
-    @PostFilter("@userRolesService.canSeePlace(filterObject, @userRolesService.springUserToDTO(principal))")
+    @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_ADMIN_ROLE_NAME)")
     public List<Place> getAll(@PathVariable("id") Lore lore) {
         return placeService.getAllPlaces(lore);
     }
@@ -70,7 +69,6 @@ public class PlaceController {
     @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME)")
     @PostFilter("@userRolesService.canSeePlace(filterObject, @userRolesService.springUserToDTO(principal))")
     public List<Place> getAllPlacesForDate(@PathVariable("id") Lore lore, @Valid @RequestBody PlaceDateGetDTO dateInfo) {
-        List<Place> h = placeService.getAllPlacesCreatedBefore(lore, dateInfo.getDate());
-        return h;
+        return placeService.getAllPlacesCreatedBefore(lore, dateInfo.getDate());
     }
 }
