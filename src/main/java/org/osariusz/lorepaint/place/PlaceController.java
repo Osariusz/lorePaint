@@ -3,8 +3,8 @@ package org.osariusz.lorepaint.place;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.osariusz.lorepaint.lore.Lore;
-import org.osariusz.lorepaint.lore.LoreService;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
+import org.osariusz.lorepaint.shared.DateGetDTO;
 import org.osariusz.lorepaint.shared.UserRolesService;
 import org.osariusz.lorepaint.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +57,15 @@ public class PlaceController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    @PreAuthorize(
+            "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && " +
+            "@userRolesService.canSeePlace(#place, @userRolesService.springUserToDTO(principal))"
+    )
+    public Place getPlace(@PathVariable("id") Place place) {
+        return place;
+    }
+
     @GetMapping("/all/{id}")
     @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_ADMIN_ROLE_NAME)")
     public List<Place> getAll(@PathVariable("id") Lore lore) {
@@ -74,7 +81,7 @@ public class PlaceController {
     @PostMapping("/all_before/{id}")
     @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME)")
     @PostFilter("@userRolesService.canSeePlace(filterObject, @userRolesService.springUserToDTO(principal))")
-    public List<Place> getAllPlacesForDate(@PathVariable("id") Lore lore, @Valid @RequestBody PlaceDateGetDTO dateInfo) {
+    public List<Place> getAllPlacesForDate(@PathVariable("id") Lore lore, @Valid @RequestBody DateGetDTO dateInfo) {
         return placeService.getAllPlacesCreatedBefore(lore, dateInfo.getDate());
     }
 }

@@ -10,6 +10,6 @@ import java.time.LocalDateTime;
 public class PlaceUpdateDTO {
     private String description;
     private String picture_path;
-    private LocalDateTime loreDate;
+    private LocalDateTime lore_date;
     private long placeId;
 }

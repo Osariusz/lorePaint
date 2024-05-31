@@ -3,7 +3,6 @@ package org.osariusz.lorepaint.place;
 import jakarta.validation.Validator;
 import org.modelmapper.ModelMapper;
 import org.osariusz.lorepaint.lore.Lore;
-import org.osariusz.lorepaint.placeUpdate.PlaceUpdateRepository;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdateService;
 import org.osariusz.lorepaint.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ public class PlaceService {
     }
 
     public boolean placeCreatedBefore(Place place, LocalDateTime localDateTime) {
-        return !placeUpdateService.getAllPlaceUpdatesBefore(place, localDateTime).isEmpty();
+        return !placeUpdateService.getAllPlaceUpdatesUpTo(place, localDateTime).isEmpty();
     }
 
     public List<Place> getAllPlacesCreatedBefore(Lore lore, LocalDateTime localDateTime) {
