@@ -5,6 +5,8 @@ import org.osariusz.lorepaint.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     @Autowired
@@ -24,6 +26,10 @@ public class UserService {
 
     public boolean userExists(String username) {
         return userRepository.findByUsername(username).isPresent();
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
 }

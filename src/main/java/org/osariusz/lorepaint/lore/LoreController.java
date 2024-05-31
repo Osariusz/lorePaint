@@ -88,4 +88,10 @@ public class LoreController {
     public List<Lore> getLores() {
         return loreService.getAllLores();
     }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_ADMIN_ROLE_NAME)")
+    public List<Lore> getAllLores() {
+        return loreService.getAllLores();
+    }
 }
