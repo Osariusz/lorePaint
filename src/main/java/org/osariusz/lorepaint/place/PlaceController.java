@@ -65,6 +65,12 @@ public class PlaceController {
         return placeService.getAllPlaces(lore);
     }
 
+    @GetMapping("/all")
+    @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_ADMIN_ROLE_NAME)")
+    public List<Place> getAll() {
+        return placeService.getAllPlaces();
+    }
+
     @PostMapping("/all_before/{id}")
     @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME)")
     @PostFilter("@userRolesService.canSeePlace(filterObject, @userRolesService.springUserToDTO(principal))")

@@ -36,6 +36,10 @@ public class PlaceService {
         placeRepository.save(place);
     }
 
+    public List<Place> getAllPlaces() {
+        return placeRepository.findAll();
+    }
+
     public List<Place> getAllPlaces(Lore lore) {
         return placeRepository.findAllByLore(lore);
     }
