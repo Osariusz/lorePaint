@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.osariusz.lorepaint.place.Place;
+import org.osariusz.lorepaint.shared.Update;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "place_updates")
-public class PlaceUpdate {
+public class PlaceUpdate implements Update {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

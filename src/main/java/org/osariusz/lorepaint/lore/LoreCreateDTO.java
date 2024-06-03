@@ -7,4 +7,5 @@ import lombok.Setter;
 public class LoreCreateDTO {
     private String name;
     private String description;
+    private String map_path;
 }

@@ -34,14 +34,10 @@ public class MapService {
         Validation.validate(map, validator);
     }
 
-    public Map createMap() {
+    public Map createMap(String mapPath) {
         Map result = new Map();
-        MapUpdate mapUpdate = new MapUpdate();
-        //TODO: make below values configurable
-        mapUpdate.setLore_date(LocalDateTime.now());
-        mapUpdate.setX(0);
-        mapUpdate.setY(0);
-
+        result.setCreated_at(LocalDateTime.now());
+        MapUpdate mapUpdate = mapUpdateService.createMapUpdate(result, mapPath);
         result.setMapUpdates(new ArrayList<>(List.of(mapUpdate)));
         saveMap(result);
         return result;

@@ -7,6 +7,7 @@ import org.antlr.v4.runtime.misc.Interval;
 import org.hibernate.dialect.PostgreSQLIntervalSecondJdbcType;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.map.Map;
+import org.osariusz.lorepaint.shared.Update;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "map_updates")
-public class MapUpdate {
+public class MapUpdate implements Update {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +25,7 @@ public class MapUpdate {
     @Column
     private String picture_path;
 
+    @Lob
     @NotNull(message = "Lore date must not be null")
     @Column
     private LocalDateTime lore_date;
@@ -41,6 +43,6 @@ public class MapUpdate {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="map_id", nullable = false)
+    @JoinColumn(name="map_id")
     private Map map;
 }

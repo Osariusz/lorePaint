@@ -2,6 +2,9 @@ package org.osariusz.lorepaint.lore;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
+import org.osariusz.lorepaint.mapUpdate.MapUpdate;
+import org.osariusz.lorepaint.shared.DateGetDTO;
+import org.osariusz.lorepaint.shared.LoreMapService;
 import org.osariusz.lorepaint.shared.UserRolesService;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserDTO;
@@ -34,6 +37,9 @@ public class LoreController {
     private LoreService loreService;
 
     @Autowired
+    private LoreMapService loreMapService;
+
+    @Autowired
     private UserRolesService userRolesService;
 
     @Autowired
@@ -42,6 +48,11 @@ public class LoreController {
     @GetMapping("/{id}")
     public Lore getLore(@PathVariable("id") Lore lore) {
         return lore;
+    }
+
+    @PostMapping("/{id}/get_last_map_update")
+    public MapUpdate getLastMapUpdate(@PathVariable("id") Lore lore, @RequestBody DateGetDTO loreDateDTO) {
+        return loreMapService.getLastLoreMapUpdate(lore, loreDateDTO.getLore_date());
     }
 
     @PostMapping("/create")
@@ -70,16 +81,23 @@ public class LoreController {
     @MessageMapping("/{id}/set_mouse")
     //@SendTo("/{id}/get_mouse")
     @PreAuthorize("true") //custom authorization in method
-    public String mousePositions(@DestinationVariable("id") long lore, @Payload String message, Principal principal) throws Exception {
+    public ResponseEntity<String> mousePositions(@DestinationVariable("id") long lore, @Payload String message, Principal principal) {
         UserDTO userDTO = userRolesService.principalToDTO(principal);
-        if(userRolesService.isUser(userDTO) && userRolesService.isMember(lore, userDTO)) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            double[] coordinates = objectMapper.readValue(message, double[].class);
-            MouseCursorDTO mouseCursorDTO = new MouseCursorDTO(principal.getName(), coordinates);
-            messagingTemplate.convertAndSend(this.getClass().getAnnotation(RequestMapping.class).value()[0]+"/"+lore+"/get_mouse", mouseCursorDTO);
-            return message;
+        try {
+            if(userRolesService.isUser(userDTO) && userRolesService.isMember(lore, userDTO)) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                double[] coordinates = objectMapper.readValue(message, double[].class);
+                MouseCursorDTO mouseCursorDTO = new MouseCursorDTO(principal.getName(), coordinates);
+                messagingTemplate.convertAndSend(this.getClass().getAnnotation(RequestMapping.class).value()[0]+"/"+lore+"/get_mouse", mouseCursorDTO);
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
         }
-        return "403 forbidden";
+        catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/available")

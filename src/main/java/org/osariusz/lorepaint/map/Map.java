@@ -31,6 +31,6 @@ public class Map {
     private Lore lore;
 
     @NotEmpty(message = "Place must have at least one place update")
-    @OneToMany(mappedBy = "map")
+    @OneToMany(mappedBy = "map", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<MapUpdate> mapUpdates;
 }

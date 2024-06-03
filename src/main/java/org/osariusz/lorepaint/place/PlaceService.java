@@ -44,7 +44,7 @@ public class PlaceService {
     }
 
     public boolean placeCreatedBefore(Place place, LocalDateTime localDateTime) {
-        return !placeUpdateService.getAllPlaceUpdatesUpTo(place, localDateTime).isEmpty();
+        return !placeUpdateService.getAllUpdatesUpTo(place, localDateTime).isEmpty();
     }
 
     public List<Place> getAllPlacesCreatedBefore(Lore lore, LocalDateTime localDateTime) {
