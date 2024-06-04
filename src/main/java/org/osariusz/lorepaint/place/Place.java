@@ -1,19 +1,15 @@
 package org.osariusz.lorepaint.place;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
 import org.osariusz.lorepaint.user.User;
 import org.springframework.data.geo.Point;
 
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -48,8 +44,8 @@ public class Place {
     @Column
     private LocalDateTime last_edit;
 
-    @Column
-    private LocalDateTime removed_at;
+    @Column(name = "removed_at")
+    private LocalDateTime removedAt;
 
     @Column
     @NotNull(message = "Place secret status must not be null")

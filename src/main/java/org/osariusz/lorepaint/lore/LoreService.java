@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -63,6 +64,7 @@ public class LoreService {
         Lore lore = modelMapper.map(loreCreateDTO, Lore.class);
         lore.setPlaces(new ArrayList<>());
         lore.setMap(mapService.createMap(loreCreateDTO.getMap_path()));
+        lore.setCreated_at(LocalDateTime.now());
         saveLore(lore);
         LoreUserRole loreGMRole = loreUserRoleService.assignLoreUserRole(creator, lore, RoleNames.LORE_GM_ROLE_NAME);
         LoreUserRole loreMemberRole = loreUserRoleService.assignLoreUserRole(creator, lore, RoleNames.LORE_MEMBER_ROLE_NAME);
@@ -80,6 +82,7 @@ public class LoreService {
     }
 
     public void saveLore(Lore lore) {
+        lore.setLast_edit(LocalDateTime.now());
         validateLore(lore);
         loreRepository.save(lore);
     }

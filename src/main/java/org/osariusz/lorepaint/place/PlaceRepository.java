@@ -9,5 +9,8 @@ import java.util.List;
 
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Long> {
-    public List<Place> findAllByLore(@NotNull(message = "Place lore id cannot be null") Lore lore);
+
+    public List<Place> findAllByRemovedAtIsNull();
+
+    public List<Place> findAllByLoreAndRemovedAtIsNull(@NotNull(message = "Place lore id cannot be null") Lore lore);
 }

@@ -24,7 +24,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
@@ -105,7 +104,7 @@ public class UserMapServiceTest {
         //Mockito.when(userRepository.findByUsername(user1.getUsername())).thenReturn(Optional.ofNullable(user1));
         //Mockito.when(userRepository.findByUsername(user2.getUsername())).thenReturn(Optional.ofNullable(user2));
         //Mockito.when(loreRepository.getReferenceById(lore.getId())).thenReturn(lore);
-        Mockito.when(placeRepository.findAllByLore(Mockito.any())).thenReturn(List.of(secretPlace));
+        Mockito.when(placeRepository.findAllByLoreAndRemovedAtIsNull(Mockito.any())).thenReturn(List.of(secretPlace));
     }
 
     @Test

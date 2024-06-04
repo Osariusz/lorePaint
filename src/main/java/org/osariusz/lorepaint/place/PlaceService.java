@@ -31,16 +31,17 @@ public class PlaceService {
     }
 
     public void savePlace(Place place) {
+        place.setLast_edit(LocalDateTime.now());
         validatePlace(place);
         placeRepository.save(place);
     }
 
     public List<Place> getAllPlaces() {
-        return placeRepository.findAll();
+        return placeRepository.findAllByRemovedAtIsNull();
     }
 
     public List<Place> getAllPlaces(Lore lore) {
-        return placeRepository.findAllByLore(lore);
+        return placeRepository.findAllByLoreAndRemovedAtIsNull(lore);
     }
 
     public boolean placeCreatedBefore(Place place, LocalDateTime localDateTime) {
