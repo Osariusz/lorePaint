@@ -7,6 +7,7 @@ import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRoleRepository;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserRepository;
+import org.osariusz.lorepaint.user.UserService;
 import org.osariusz.lorepaint.utils.RoleNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,11 +31,12 @@ import java.util.List;
 @RequestMapping("/public")
 public class AuthController {
 
-    private AuthenticationManager authenticationManager;
 
     private UserRepository userRepository;
 
-    private CustomUserDetailsService userDetailsService;
+    @Autowired
+    private UserService userService;
+
 
     @Autowired
     private SystemUserRoleRepository systemUserRoleRepository;
@@ -45,11 +47,13 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
     private DelegatingSecurityContextRepository securityContextRepository;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, SystemUserRoleRepository systemUserRoleRepository, PasswordEncoder passwordEncoder) {
-        this.authenticationManager = authenticationManager;
+    public AuthController(UserRepository userRepository, SystemUserRoleRepository systemUserRoleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.systemUserRoleRepository = systemUserRoleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -60,42 +64,22 @@ public class AuthController {
                                         HttpServletRequest request,
                                         HttpServletResponse response)
     {
-        Authentication authenticationRequest =
-                UsernamePasswordAuthenticationToken.unauthenticated(loginDto.getUsername(), loginDto.getPassword());
-        Authentication authenticationResponse =
-                this.authenticationManager.authenticate(authenticationRequest);
 
-        SecurityContextHolder.getContext().setAuthentication(authenticationResponse);
-        request.getSession();
+        if(userService.userRemoved(loginDto.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
 
-        securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
+        userService.login(loginDto, authenticationManager, request, response);
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-        if(userRepository.existsByUsername(registerDto.getUsername())) {
+        if(userService.userExists(registerDto.getUsername())) {
             return new ResponseEntity<>("Username is taken", HttpStatus.BAD_REQUEST);
         }
-
-        LocalDateTime registerTime = LocalDateTime.now();
-
-        User user = new User();
-        user.setUsername(registerDto.getUsername());
-        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-        user.setCreated_at(registerTime);
-
-        SystemUserRole userRole = new SystemUserRole();
-        userRole.setUser(user);
-        userRole.setRole(systemRoleRepository.findByRole(RoleNames.SYSTEM_USER_ROLE_NAME));
-        userRole.setGranted_at(registerTime);
-
-        user.setSystemUserRoles(new ArrayList<>(List.of(userRole)));
-
-        userRepository.save(user);
-        systemUserRoleRepository.save(userRole);
-
+        userService.createUser(registerDto, passwordEncoder);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -5,11 +5,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
-import org.osariusz.lorepaint.auth.CustomUserDetailsService;
 import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
 import org.osariusz.lorepaint.place.PlaceCreateDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +16,8 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -38,13 +38,6 @@ import java.util.function.Supplier;
 @EnableMethodSecurity
 @EnableWebSecurity
 class SecurityConfiguration {
-
-    private CustomUserDetailsService customUserDetailsService;
-
-    @Autowired
-    public SecurityConfiguration(CustomUserDetailsService customUserDetailsService){
-        this.customUserDetailsService = customUserDetailsService;
-    }
 
     @Value("${FRONT_URL}")
     private String FRONT_URL;
@@ -87,6 +80,11 @@ class SecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
     }
 
     @Bean

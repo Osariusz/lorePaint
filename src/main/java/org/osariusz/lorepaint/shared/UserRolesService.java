@@ -14,7 +14,6 @@ import org.osariusz.lorepaint.user.UserDTO;
 import org.osariusz.lorepaint.user.UserRepository;
 import org.osariusz.lorepaint.utils.RoleNames;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -53,12 +52,12 @@ public class UserRolesService {
     private UserDetailsService userDetailsService;
 
     public UserDTO springUserToDTO(org.springframework.security.core.userdetails.User springUser) {
-        User user = userRepository.findByUsername(springUser.getUsername()).orElseThrow();
+        User user = userRepository.findByUsernameAndRemovedAtIsNull(springUser.getUsername()).orElseThrow();
         return modelMapper.map(user, UserDTO.class);
     }
 
     public User principalToUser(Principal principal) {
-        User user = userRepository.findByUsername(principal.getName()).orElseThrow();
+        User user = userRepository.findByUsernameAndRemovedAtIsNull(principal.getName()).orElseThrow();
         return modelMapper.map(user, User.class);
     }
 

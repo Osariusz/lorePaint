@@ -36,4 +36,10 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @GetMapping("/remove/{username}")
+    @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_ADMIN_ROLE_NAME)")
+    public void removeUser(@PathVariable String username) {
+        userService.removeUser(username);
+    }
+
 }

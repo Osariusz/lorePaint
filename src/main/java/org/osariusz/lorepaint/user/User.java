@@ -42,8 +42,8 @@ public class User {
     @Column
     private LocalDateTime last_online;
 
-    @Column
-    private LocalDateTime removed_at;
+    @Column(name = "removed_at")
+    private LocalDateTime removedAt;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
