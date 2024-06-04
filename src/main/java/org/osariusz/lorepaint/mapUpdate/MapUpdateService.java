@@ -29,7 +29,7 @@ public class MapUpdateService extends UpdateService<Map, MapUpdate> {
 
     @Override
     public List<MapUpdate> getAllUpdates(Map updatedObject) {
-        return mapUpdateRepository.findAll();
+        return mapUpdateRepository.findAllByMap(updatedObject);
     }
 
     public MapUpdate createMapUpdate(Map map, String mapPath) {
