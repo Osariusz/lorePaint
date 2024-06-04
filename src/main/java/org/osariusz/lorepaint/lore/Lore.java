@@ -3,12 +3,10 @@ package org.osariusz.lorepaint.lore;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
 import org.osariusz.lorepaint.map.Map;
-import org.osariusz.lorepaint.mapUpdate.MapUpdate;
 import org.osariusz.lorepaint.place.Place;
 
 import java.time.LocalDateTime;
@@ -42,8 +40,8 @@ public class Lore {
     @Column
     private LocalDateTime last_edit;
 
-    @Column
-    private LocalDateTime removed_at;
+    @Column(name = "removed_at")
+    private LocalDateTime removedAt;
 
     @JsonIgnore
     @NotNull(message = "Map must not be null")

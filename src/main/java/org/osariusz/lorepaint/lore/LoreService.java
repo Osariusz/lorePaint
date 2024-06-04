@@ -45,7 +45,7 @@ public class LoreService {
     private ModelMapper modelMapper;
 
     public Lore getLoreById(Long id) {
-        Lore lore = loreRepository.findById(id).orElse(null);
+        Lore lore = loreRepository.findByIdAndRemovedAtIsNull(id).orElse(null);
         if(lore == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lore not found");
         }
@@ -53,7 +53,7 @@ public class LoreService {
     }
 
     public List<Lore> getAllLores() {
-        return loreRepository.findAll();
+        return loreRepository.findAllByRemovedAtIsNull();
     }
 
     public void validateLore(Lore lore) {

@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/lore")
@@ -46,13 +47,20 @@ public class LoreController {
     SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/{id}")
-    public Lore getLore(@PathVariable("id") Lore lore) {
-        return lore;
+    public Lore getLore(@PathVariable("id") long loreId) {
+        return loreService.getLoreById(loreId);
     }
 
     @PostMapping("/{id}/get_last_map_update")
-    public MapUpdate getLastMapUpdate(@PathVariable("id") Lore lore, @RequestBody DateGetDTO loreDateDTO) {
-        return loreMapService.getLastLoreMapUpdate(lore, loreDateDTO.getLore_date());
+    public ResponseEntity<MapUpdate> getLastMapUpdate(@PathVariable("id") long loreId, @RequestBody DateGetDTO loreDateDTO) {
+        Lore lore = loreService.getLoreById(loreId);
+        try {
+            return new ResponseEntity<>(loreMapService.getLastLoreMapUpdate(lore, loreDateDTO.getLore_date()), HttpStatus.OK);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
     }
 
     @PostMapping("/create")
@@ -64,7 +72,11 @@ public class LoreController {
 
     @PostMapping("/{id}/add_user")
     @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && @userRolesService.isGM(#lore, @userRolesService.springUserToDTO(principal))")
-    public ResponseEntity<String> addUser(@PathVariable("id") Lore lore, @RequestBody User user) {
+    public ResponseEntity<String> addUser(@PathVariable("id") long loreId, @RequestBody User user) {
+        Lore lore = loreService.getLoreById(loreId);
+        if(lore == null) {
+            return new ResponseEntity<>("Lore not found", HttpStatus.BAD_REQUEST);
+        }
         try {
             loreService.assignSaveLoreUserRole(user, lore, RoleNames.LORE_MEMBER_ROLE_NAME);
             return new ResponseEntity<>(HttpStatus.OK);

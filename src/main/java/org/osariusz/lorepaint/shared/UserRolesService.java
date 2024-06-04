@@ -1,7 +1,6 @@
 package org.osariusz.lorepaint.shared;
 
 import org.modelmapper.ModelMapper;
-import org.osariusz.lorepaint.SystemRole.SystemRole;
 import org.osariusz.lorepaint.SystemRole.SystemRoleRepository;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreRepository;
@@ -9,22 +8,20 @@ import org.osariusz.lorepaint.loreRole.LoreRoleRepository;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRoleRepository;
 import org.osariusz.lorepaint.place.Place;
-import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRoleRepository;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.user.UserDTO;
 import org.osariusz.lorepaint.user.UserRepository;
 import org.osariusz.lorepaint.utils.RoleNames;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 @Service
 public class UserRolesService {
@@ -98,7 +95,10 @@ public class UserRolesService {
     }
 
     public boolean isMember(long loreId, UserDTO userDTO) {
-        Lore lore = loreRepository.findById(loreId);
+        Lore lore = loreRepository.findByIdAndRemovedAtIsNull(loreId).orElse(null);
+        if(lore == null) {
+            throw new RuntimeException("Lore with id " + loreId + " not found");
+        }
         return isMember(lore, userDTO);
     }
 

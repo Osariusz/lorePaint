@@ -2,6 +2,7 @@ package org.osariusz.lorepaint.shared;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public abstract class UpdateService<T, U extends Update> {
 
@@ -18,6 +19,6 @@ public abstract class UpdateService<T, U extends Update> {
                 return update1.getCreated_at().compareTo(update2.getCreated_at());
             }
             return update1.getLore_date().compareTo(update2.getLore_date());
-        }).orElseThrow(() -> new RuntimeException("No update found"));
+        }).orElseThrow(() -> new NoSuchElementException("No update found"));
     }
 }
