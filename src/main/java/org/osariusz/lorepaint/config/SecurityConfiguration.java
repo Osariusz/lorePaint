@@ -59,6 +59,9 @@ class SecurityConfiguration {
                             .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
                     )
                     .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                    .logout((logout) -> logout.logoutUrl("/public/logout").logoutSuccessHandler((request, response, authentication) -> {
+                        response.setStatus(HttpServletResponse.SC_OK);
+                    }))
                     .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOrigins(List.of(FRONT_URL));
