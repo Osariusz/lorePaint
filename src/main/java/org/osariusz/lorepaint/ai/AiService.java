@@ -2,32 +2,11 @@ package org.osariusz.lorepaint.ai;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import jakarta.validation.*;
-import org.modelmapper.ModelMapper;
-import org.osariusz.lorepaint.loreRole.LoreRole;
-import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
-import org.osariusz.lorepaint.loreUserRole.LoreUserRoleService;
-import org.osariusz.lorepaint.map.MapService;
-import org.osariusz.lorepaint.place.Place;
-import org.osariusz.lorepaint.user.User;
-import org.osariusz.lorepaint.user.UserService;
-import org.osariusz.lorepaint.utils.RoleNames;
-import org.osariusz.lorepaint.utils.Validation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class AiService {
@@ -38,12 +17,16 @@ public class AiService {
     @Value("${AI_MODEL}")
     private String AI_MODEL;
 
-    public String generatePlaceDescription(String prompt) {
+    public String generatePlaceDescription(AiPlaceDescriptionDTO data) {
         RestClient restClient = RestClient.builder()
                 .baseUrl(AI_URL)
                 .build();
 
         ObjectMapper mapper = new ObjectMapper();
+
+        String base = "### TASK ###\nYou are a writer who's job is to write a beautiful description of a place. You will be presented with some information about the place and your job is to use your imagination and develop a completely new, interesting story for this place. Output only the description and nothing else. Place info:\n";
+
+        String prompt = base+"name: "+data.name+" details: "+data.info+ "\n### AI RESPONSE ###";
 
         ObjectNode generationObject = mapper.createObjectNode();
         generationObject.put("model", AI_MODEL);
