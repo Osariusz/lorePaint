@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/placeUpdate")
@@ -41,8 +42,19 @@ public class PlaceUpdateController {
             "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&" +
             "@userRolesService.canSeePlace(#place, @userRolesService.springUserToDTO(principal))"
     )
-    public PlaceUpdateDTO getLastPlaceUpdate(@PathVariable("id") Place place, @RequestBody DateGetDTO placeDateGetDTO) {
-        return modelMapper.map(placeUpdateService.getLastUpdate(place, placeDateGetDTO.getLore_date()), PlaceUpdateDTO.class);
+    public ResponseEntity<PlaceUpdateDTO> getLastPlaceUpdate(@PathVariable("id") Place place, @RequestBody DateGetDTO placeDateGetDTO) {
+        try {
+            return new ResponseEntity<>(
+                    modelMapper.map(
+                            placeUpdateService.getLastUpdate(place, placeDateGetDTO.getLore_date()),
+                            PlaceUpdateDTO.class
+                    ),
+                    HttpStatus.OK
+            );
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{place}/allUpdates")

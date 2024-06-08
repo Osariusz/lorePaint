@@ -28,9 +28,20 @@ public class PlaceUpdateService extends UpdateService<Place, PlaceUpdate> {
 
     public void saveFromPlaceUpdateDTO(Place place, PlaceUpdateDTO placeUpdateDTO) {
         PlaceUpdate newPlaceUpdate = modelMapper.map(placeUpdateDTO, PlaceUpdate.class);
+        newPlaceUpdate.setId(null);
         newPlaceUpdate.setPlace(place);
-        newPlaceUpdate.setCreated_at(LocalDateTime.now());
-        savePlaceUpdate(newPlaceUpdate);
+        saveNewPlaceUpdate(newPlaceUpdate);
+    }
+
+    public void fixNexPlaceUpdate(Place place, PlaceUpdate placeUpdate) {
+        placeUpdate.setId(null);
+        placeUpdate.setPlace(place);
+        placeUpdate.setCreated_at(LocalDateTime.now());
+    }
+
+    public void saveNewPlaceUpdate(PlaceUpdate placeUpdate) {
+        placeUpdate.setCreated_at(LocalDateTime.now());
+        savePlaceUpdate(placeUpdate);
     }
 
     public void savePlaceUpdate(PlaceUpdate placeUpdate) {
