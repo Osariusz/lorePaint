@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/api/place")
 @PreAuthorize(
         "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && " +
-        "@userRolesService.isMember(#lore, @userRolesService.springUserToDTO(principal))"
+        "@userRolesService.isMember(@loreService.getLoreById(#loreId), @userRolesService.springUserToDTO(principal))"
 )
 public class PlaceController {
     @Autowired
@@ -60,7 +60,7 @@ public class PlaceController {
     @GetMapping("/{id}")
     @PreAuthorize(
             "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && " +
-            "@userRolesService.canSeePlace(#place, @userRolesService.springUserToDTO(principal))"
+            "@userRolesService.canSeePlace(@placeService.getPlaceById(#placeId), @userRolesService.springUserToDTO(principal))"
     )
     public Place getPlace(@PathVariable("id") long placeId) {
         return placeService.getPlaceById(placeId);

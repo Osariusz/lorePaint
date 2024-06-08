@@ -24,7 +24,7 @@ public class AiService {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        String base = "### TASK ###\nYou are a writer who's job is to write a beautiful description of a place. You will be presented with some information about the place and your job is to use your imagination and develop a completely new, interesting story for this place. Output only the description and nothing else. Place info:\n";
+        String base = "### TASK ###\nYou are a writer who's job is to write a beautiful description of a place. You will be presented with some information about the place and your job is to use your imagination and develop a completely new, interesting story for this place. Output only the description and nothing else. Your answer should be short but creative. Place info:\n";
 
         String prompt = base+"name: "+data.name+" details: "+data.info+ "\n### AI RESPONSE ###";
 
@@ -35,12 +35,13 @@ public class AiService {
 
         try {
             String generationString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(generationObject);
-            String result = restClient.post()
+            AIAnswerDTO result = restClient.post()
                     .uri("/api/generate")
                     .body(generationString)
                     .retrieve()
-                    .body(String.class);
-            return result;
+                    .body(AIAnswerDTO.class);
+            assert result != null;
+            return result.getResponse();
 
         }
         catch (Exception e) {
