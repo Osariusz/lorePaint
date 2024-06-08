@@ -32,7 +32,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/lore")
-@PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && @userRolesService.isMember(#lore, @userRolesService.springUserToDTO(principal))")
+@PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && @userRolesService.isMember(@loreService.getLoreById(#loreId), @userRolesService.springUserToDTO(principal))")
 public class LoreController {
     @Autowired
     private LoreService loreService;
@@ -71,7 +71,7 @@ public class LoreController {
     }
 
     @PostMapping("/{id}/add_user")
-    @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && @userRolesService.isGM(#lore, @userRolesService.springUserToDTO(principal))")
+    @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && @userRolesService.isGM(@loreService.getLoreById(#loreId), @userRolesService.springUserToDTO(principal))")
     public ResponseEntity<String> addUser(@PathVariable("id") long loreId, @RequestBody User user) {
         Lore lore = loreService.getLoreById(loreId);
         if(lore == null) {
@@ -93,14 +93,14 @@ public class LoreController {
     @MessageMapping("/{id}/set_mouse")
     //@SendTo("/{id}/get_mouse")
     @PreAuthorize("true") //custom authorization in method
-    public ResponseEntity<String> mousePositions(@DestinationVariable("id") long lore, @Payload String message, Principal principal) {
+    public ResponseEntity<String> mousePositions(@DestinationVariable("id") long loreId, @Payload String message, Principal principal) {
         UserDTO userDTO = userRolesService.principalToDTO(principal);
         try {
-            if(userRolesService.isUser(userDTO) && userRolesService.isMember(lore, userDTO)) {
+            if(userRolesService.isUser(userDTO) && userRolesService.isMember(loreId, userDTO)) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 double[] coordinates = objectMapper.readValue(message, double[].class);
                 MouseCursorDTO mouseCursorDTO = new MouseCursorDTO(principal.getName(), coordinates);
-                messagingTemplate.convertAndSend(this.getClass().getAnnotation(RequestMapping.class).value()[0]+"/"+lore+"/get_mouse", mouseCursorDTO);
+                messagingTemplate.convertAndSend(this.getClass().getAnnotation(RequestMapping.class).value()[0]+"/"+loreId+"/get_mouse", mouseCursorDTO);
                 return new ResponseEntity<>(message, HttpStatus.OK);
             }
             else {
