@@ -19,10 +19,8 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/allUpdate")
-@PreAuthorize(
-        "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&"+
-                "@userRolesService.isMember(#loreId, @userRolesService.principalToDTO(@principal))"
-)
+@PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&" +
+        " @userRolesService.isMember(@loreService.getLoreById(#loreId), @userRolesService.springUserToDTO(principal))")
 public class AllUpdateController {
 
     @Autowired

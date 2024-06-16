@@ -16,8 +16,8 @@ import java.util.NoSuchElementException;
 @RequestMapping("/api/placeUpdate")
 @PreAuthorize(
                 "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&"+
-                "@userRolesService.isMember(#place.lore, @userRolesService.principalToDTO(@principal)) &&"+
-                "@userRolesService.canSeePlace(#place, @userRolesService.principalToDTO(@principal))"
+                "@userRolesService.isMember(#place.lore, @userRolesService.principalToDTO(principal)) &&"+
+                "@userRolesService.canSeePlace(#place, @userRolesService.principalToDTO(principal))"
 )
 public class PlaceUpdateController {
 

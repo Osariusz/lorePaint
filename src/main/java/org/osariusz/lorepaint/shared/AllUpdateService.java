@@ -53,7 +53,8 @@ public class AllUpdateService {
         }
         List<Update> updates = new ArrayList<>();
 
-        updates.addAll(mapUpdateService.getAvailableUpdates(mapService.getAllMaps(lore), userDTO, loreId));
+        // TODO: add map updates when maps will be configurable
+        //updates.addAll(mapUpdateService.getAvailableUpdates(mapService.getAllMaps(lore), userDTO, loreId));
         updates.addAll(placeUpdateService.getAvailableUpdates(placeService.getAllPlaces(loreId), userDTO, loreId));
 
         Set<LocalDateTime> dates = new HashSet<>();
