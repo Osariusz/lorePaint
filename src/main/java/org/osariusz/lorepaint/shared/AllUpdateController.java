@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/allUpdates")
+@RequestMapping("/api/allUpdate")
 @PreAuthorize(
         "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&"+
                 "@userRolesService.isMember(#loreId, @userRolesService.principalToDTO(@principal))"
