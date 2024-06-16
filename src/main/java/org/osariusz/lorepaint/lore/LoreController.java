@@ -71,7 +71,7 @@ public class LoreController {
     }
 
     @PostMapping("/{id}/add_user")
-    @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && @userRolesService.isGM(@loreService.getLoreById(#loreId), @userRolesService.springUserToDTO(principal))")
+    @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && (@userRolesService.isGM(@loreService.getLoreById(#loreId), @userRolesService.springUserToDTO(principal)) || @userRolesService.isAdmin(@userRolesService.springUserToDTO(principal)))")
     public ResponseEntity<String> addUser(@PathVariable("id") long loreId, @RequestBody User user) {
         Lore lore = loreService.getLoreById(loreId);
         if(lore == null) {
