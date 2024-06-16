@@ -48,4 +48,8 @@ public class MapService {
         mapRepository.save(map);
     }
 
+    public List<Map> getAllMaps(Lore lore) {
+        return mapRepository.findAllByLore(lore);
+    }
+
 }

@@ -3,6 +3,8 @@ package org.osariusz.lorepaint.mapUpdate;
 import jakarta.validation.Validator;
 import org.osariusz.lorepaint.map.Map;
 import org.osariusz.lorepaint.shared.UpdateService;
+import org.osariusz.lorepaint.shared.UserRolesService;
+import org.osariusz.lorepaint.user.UserDTO;
 import org.osariusz.lorepaint.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ public class MapUpdateService extends UpdateService<Map, MapUpdate> {
 
     @Autowired
     private Validator validator;
+    @Autowired
+    private UserRolesService userRolesService;
 
     public void validateMapUpdate(MapUpdate mapUpdate) {
         Validation.validate(mapUpdate, validator);
@@ -30,6 +34,11 @@ public class MapUpdateService extends UpdateService<Map, MapUpdate> {
     @Override
     public List<MapUpdate> getAllUpdates(Map updatedObject) {
         return mapUpdateRepository.findAllByMap(updatedObject);
+    }
+
+    @Override
+    public boolean objectAccessFunction(Map updatedObject, UserDTO userDTO) {
+        return userRolesService.isMember(updatedObject.getLore(), userDTO);
     }
 
     public MapUpdate createMapUpdate(Map map, String mapPath) {

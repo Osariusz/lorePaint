@@ -1,12 +1,29 @@
 package org.osariusz.lorepaint.shared;
 
+import org.osariusz.lorepaint.place.Place;
+import org.osariusz.lorepaint.user.UserDTO;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 public abstract class UpdateService<T, U extends Update> {
 
     public abstract List<U> getAllUpdates(T updatedObject);
+
+    public abstract boolean objectAccessFunction(T updatedObject, UserDTO userDTO);
+
+    public List<U> getAvailableUpdates(List<T> objects, UserDTO userDTO, long loreId) {
+        List<U> updates = new ArrayList<>();
+        List<T> places = objects.stream().filter(
+                (place) -> objectAccessFunction(place, userDTO)
+        ).toList();
+        for (T object : places) {
+            updates.addAll(getAllUpdates(object));
+        }
+        return updates;
+    }
 
     public List<U> getAllUpdatesUpTo(T updatedObject, LocalDateTime localDateTime) {
         List<U> allUpdates = getAllUpdates(updatedObject);

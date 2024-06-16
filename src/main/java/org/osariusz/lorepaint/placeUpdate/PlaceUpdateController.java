@@ -56,9 +56,4 @@ public class PlaceUpdateController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    @GetMapping("/{place}/allUpdates")
-    public List<PlaceUpdate> getAllPlaceUpdates(@PathVariable("id") Place place) {
-        return placeUpdateService.getAllUpdates(place);
-    }
 }
