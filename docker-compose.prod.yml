@@ -15,6 +15,8 @@ services:
       - LORE_PAINT_DB_USER=${LORE_PAINT_DB_USER}
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-prod}
       - FRONT_URL=${FRONT_URL}
+      - AI_URL=${AI_URL}
+      - AI_MODEL=${AI_MODEL}
     depends_on:
       db:
         condition: service_healthy
