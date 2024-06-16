@@ -1,4 +1,4 @@
-package org.osariusz.lorepaint.placeUpdate;
+package org.osariusz.lorepaint.shared;
 
 import org.modelmapper.ModelMapper;
 import org.osariusz.lorepaint.place.Place;
@@ -18,15 +18,12 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/placeUpdate")
+@RequestMapping("/api/allUpdates")
 @PreAuthorize(
         "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&"+
-                "@userRolesService.isMember(#place.lore, @userRolesService.principalToDTO(@principal))"
+                "@userRolesService.isMember(#loreId, @userRolesService.principalToDTO(@principal))"
 )
 public class AllUpdateController {
-
-    @Autowired
-    private PlaceUpdateService placeUpdateService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -35,11 +32,7 @@ public class AllUpdateController {
     @Autowired
     private UserRolesService userRolesService;
 
-    @PostMapping("/all/{id}")
-    @PreAuthorize(
-            "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&" +
-                    "@userRolesService.canSeePlace(#place, @userRolesService.springUserToDTO(principal))"
-    )
+    @PostMapping("/{id}")
     public ResponseEntity<Set<LocalDateTime>> getLastPlaceUpdate(@PathVariable("id") long loreId, Principal principal) {
         try {
             return new ResponseEntity<>(
