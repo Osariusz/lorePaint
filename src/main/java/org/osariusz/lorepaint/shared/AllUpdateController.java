@@ -32,7 +32,7 @@ public class AllUpdateController {
     @Autowired
     private UserRolesService userRolesService;
 
-    @PostMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Set<LocalDateTime>> getLastPlaceUpdate(@PathVariable("id") long loreId, Principal principal) {
         try {
             return new ResponseEntity<>(
