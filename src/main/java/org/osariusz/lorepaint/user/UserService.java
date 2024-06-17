@@ -97,7 +97,6 @@ public class UserService implements UserDetailsService {
                 authenticationManager.authenticate(authenticationRequest);
 
         SecurityContextHolder.getContext().setAuthentication(authenticationResponse);
-        //request.getSession();
 
         securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
     }

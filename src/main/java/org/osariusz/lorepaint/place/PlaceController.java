@@ -2,22 +2,17 @@ package org.osariusz.lorepaint.place;
 
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
-import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdateService;
 import org.osariusz.lorepaint.shared.DateGetDTO;
 import org.osariusz.lorepaint.shared.UserRolesService;
-import org.osariusz.lorepaint.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,23 +30,6 @@ public class PlaceController {
 
     @Autowired
     private ModelMapper modelMapper;
-    @Autowired
-    private PlaceUpdateService placeUpdateService;
-
-    //TODO: move to service
-    public void createSavePlace(PlaceCreateDTO placeCreateDTO) {
-        Place place = modelMapper.map(placeCreateDTO, Place.class);
-        place.setId(null);
-        place.setCreated_at(LocalDateTime.now());
-        Principal principal = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRolesService.principalToUser(principal);
-        place.setOwner(user);
-
-        PlaceUpdate initialPlaceUpdate = modelMapper.map(placeCreateDTO, PlaceUpdate.class);
-        placeUpdateService.fixNexPlaceUpdate(place, initialPlaceUpdate);
-        place.setPlaceUpdates(new ArrayList<>(List.of(initialPlaceUpdate)));
-        placeService.savePlace(place);
-    }
 
     @PostMapping("/create")
     @PreAuthorize(
@@ -59,7 +37,7 @@ public class PlaceController {
                     "@userRolesService.isMember(#placeCreateDTO.loreId, @userRolesService.springUserToDTO(principal))"
     )
     public ResponseEntity<String> createPlace(@RequestBody PlaceCreateDTO placeCreateDTO, Principal principal) {
-        createSavePlace(placeCreateDTO);
+        placeService.createSavePlace(placeCreateDTO, userRolesService.principalToUser(principal));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

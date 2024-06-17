@@ -50,7 +50,6 @@ public class MapUpdateService extends UpdateService<Map, MapUpdate> {
         mapUpdate.setX(0);
         mapUpdate.setY(0);
         mapUpdate.setMap(map);
-        //saveMapUpdate(mapUpdate);
         return mapUpdate;
     }
 }

@@ -4,7 +4,9 @@ import jakarta.validation.Validator;
 import org.modelmapper.ModelMapper;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.lore.LoreService;
+import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdateService;
+import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,4 +74,17 @@ public class PlaceService {
         List<Place> places = getAllPlaces(loreId);
         return places.stream().filter(place -> placeCreatedBefore(place, localDateTime)).collect(Collectors.toList());
     }
+
+    public void createSavePlace(PlaceCreateDTO placeCreateDTO, User user) {
+        Place place = modelMapper.map(placeCreateDTO, Place.class);
+        place.setId(null);
+        place.setCreated_at(LocalDateTime.now());
+        place.setOwner(user);
+
+        PlaceUpdate initialPlaceUpdate = modelMapper.map(placeCreateDTO, PlaceUpdate.class);
+        placeUpdateService.fixNexPlaceUpdate(place, initialPlaceUpdate);
+        place.setPlaceUpdates(new ArrayList<>(List.of(initialPlaceUpdate)));
+        savePlace(place);
+    }
+
 }

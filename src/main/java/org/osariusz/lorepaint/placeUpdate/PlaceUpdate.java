@@ -35,11 +35,9 @@ public class PlaceUpdate implements Update {
     @Column
     private LocalDateTime lore_date;
 
-    //TODO: fix cascading @NotNull(message = "Place update place id must not be null")
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "place_id")
-    //@JsonBackReference
     private Place place;
 
 }

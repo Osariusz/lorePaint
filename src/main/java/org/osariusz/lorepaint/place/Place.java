@@ -65,8 +65,6 @@ public class Place {
 
 
     @OneToMany(mappedBy = "place", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    //TODO: fix @NotEmpty(message = "Place must have at least one place update")
-    //@JsonManagedReference
     private List<PlaceUpdate> placeUpdates;
 
     public void setPoint(Point point) {
