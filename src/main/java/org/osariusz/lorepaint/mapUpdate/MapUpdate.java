@@ -3,10 +3,9 @@ package org.osariusz.lorepaint.mapUpdate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.antlr.v4.runtime.misc.Interval;
-import org.hibernate.dialect.PostgreSQLIntervalSecondJdbcType;
-import org.osariusz.lorepaint.lore.Lore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.osariusz.lorepaint.map.Map;
 import org.osariusz.lorepaint.shared.Update;
 

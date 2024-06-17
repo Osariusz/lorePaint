@@ -1,6 +1,5 @@
 package org.osariusz.lorepaint.shared;
 
-import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.user.UserDTO;
 
 import java.time.LocalDateTime;

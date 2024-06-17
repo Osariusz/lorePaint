@@ -1,7 +1,6 @@
 package org.osariusz.lorepaint.lore;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
 import org.osariusz.lorepaint.mapUpdate.MapUpdate;
 import org.osariusz.lorepaint.shared.DateGetDTO;
 import org.osariusz.lorepaint.shared.LoreMapService;
@@ -15,15 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -88,7 +82,6 @@ public class LoreController {
     }
 
     @MessageMapping("/{id}/set_mouse")
-    //@SendTo("/{id}/get_mouse")
     @PreAuthorize("true") //custom authorization in method
     public ResponseEntity<String> mousePositions(@DestinationVariable("id") long loreId, @Payload String message, Principal principal) {
         UserDTO userDTO = userRolesService.principalToDTO(principal);

@@ -3,7 +3,6 @@ package org.osariusz.lorepaint.systemUserRole;
 import jakarta.validation.Validator;
 import org.osariusz.lorepaint.SystemRole.SystemRoleService;
 import org.osariusz.lorepaint.user.User;
-import org.osariusz.lorepaint.utils.RoleNames;
 import org.osariusz.lorepaint.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

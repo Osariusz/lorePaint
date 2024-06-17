@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Validator;
 import org.osariusz.lorepaint.auth.LoginDto;
 import org.osariusz.lorepaint.auth.RegisterDto;
-import org.osariusz.lorepaint.shared.UserRolesService;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRoleService;
 import org.osariusz.lorepaint.utils.RoleNames;

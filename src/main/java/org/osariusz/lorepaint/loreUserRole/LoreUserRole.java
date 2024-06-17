@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.osariusz.lorepaint.SystemRole.SystemRole;
 import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.loreRole.LoreRole;
 import org.osariusz.lorepaint.user.User;

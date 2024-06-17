@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;

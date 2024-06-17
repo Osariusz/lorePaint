@@ -7,10 +7,7 @@ import org.osariusz.lorepaint.loreRole.LoreRoleService;
 import org.osariusz.lorepaint.user.User;
 import org.osariusz.lorepaint.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class LoreUserRoleService {

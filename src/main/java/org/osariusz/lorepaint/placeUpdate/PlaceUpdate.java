@@ -1,9 +1,6 @@
 package org.osariusz.lorepaint.placeUpdate;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -11,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.shared.Update;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 

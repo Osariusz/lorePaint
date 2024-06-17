@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.loreUserRole.LoreUserRole;
+import org.osariusz.lorepaint.place.Place;
 import org.osariusz.lorepaint.systemUserRole.SystemUserRole;
 
 import java.time.LocalDateTime;

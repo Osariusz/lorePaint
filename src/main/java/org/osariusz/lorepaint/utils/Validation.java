@@ -3,7 +3,6 @@ package org.osariusz.lorepaint.utils;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
-import org.osariusz.lorepaint.lore.Lore;
 
 import java.util.Set;
 

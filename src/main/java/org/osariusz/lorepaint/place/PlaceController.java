@@ -2,7 +2,6 @@ package org.osariusz.lorepaint.place;
 
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
-import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
 import org.osariusz.lorepaint.placeUpdate.PlaceUpdateService;
 import org.osariusz.lorepaint.shared.DateGetDTO;

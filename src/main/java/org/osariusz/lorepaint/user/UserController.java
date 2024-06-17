@@ -1,20 +1,13 @@
 package org.osariusz.lorepaint.user;
 
-import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
-import org.osariusz.lorepaint.lore.Lore;
-import org.osariusz.lorepaint.lore.LoreService;
-import org.osariusz.lorepaint.placeUpdate.PlaceUpdate;
 import org.osariusz.lorepaint.shared.UserRolesService;
-import org.osariusz.lorepaint.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

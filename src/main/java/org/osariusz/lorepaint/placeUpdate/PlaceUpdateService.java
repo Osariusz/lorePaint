@@ -2,9 +2,7 @@ package org.osariusz.lorepaint.placeUpdate;
 
 import jakarta.validation.Validator;
 import org.modelmapper.ModelMapper;
-import org.osariusz.lorepaint.lore.Lore;
 import org.osariusz.lorepaint.place.Place;
-import org.osariusz.lorepaint.shared.Update;
 import org.osariusz.lorepaint.shared.UpdateService;
 import org.osariusz.lorepaint.shared.UserRolesService;
 import org.osariusz.lorepaint.user.UserDTO;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

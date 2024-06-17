@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.osariusz.lorepaint.SystemRole.SystemRole;
 import org.osariusz.lorepaint.user.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
 
