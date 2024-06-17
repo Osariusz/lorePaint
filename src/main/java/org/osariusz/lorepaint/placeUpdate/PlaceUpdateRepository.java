@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PlaceUpdateRepository extends JpaRepository<PlaceUpdate, Long> {
-    public List<PlaceUpdate> findAllByPlace(Place place);
+    List<PlaceUpdate> findAllByPlace(Place place);
 }

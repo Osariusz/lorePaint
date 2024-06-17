@@ -22,13 +22,13 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     private LoreRoleRepository loreRoleRepository;
 
     public void createSystemRoles() {
-        if(!systemRoleRepository.existsByRole(RoleNames.SYSTEM_USER_ROLE_NAME)) {
+        if (!systemRoleRepository.existsByRole(RoleNames.SYSTEM_USER_ROLE_NAME)) {
             SystemRole user = new SystemRole();
             user.setRole(RoleNames.SYSTEM_USER_ROLE_NAME);
             systemRoleRepository.save(user);
         }
 
-        if(!systemRoleRepository.existsByRole(RoleNames.SYSTEM_ADMIN_ROLE_NAME)) {
+        if (!systemRoleRepository.existsByRole(RoleNames.SYSTEM_ADMIN_ROLE_NAME)) {
             SystemRole admin = new SystemRole();
             admin.setRole(RoleNames.SYSTEM_ADMIN_ROLE_NAME);
             systemRoleRepository.save(admin);
@@ -37,13 +37,13 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     }
 
     public void createLoreRoles() {
-        if(!loreRoleRepository.existsByRole(RoleNames.LORE_MEMBER_ROLE_NAME)) {
+        if (!loreRoleRepository.existsByRole(RoleNames.LORE_MEMBER_ROLE_NAME)) {
             LoreRole member = new LoreRole();
             member.setRole(RoleNames.LORE_MEMBER_ROLE_NAME);
             loreRoleRepository.save(member);
         }
 
-        if(!loreRoleRepository.existsByRole(RoleNames.LORE_GM_ROLE_NAME)) {
+        if (!loreRoleRepository.existsByRole(RoleNames.LORE_GM_ROLE_NAME)) {
             LoreRole gm = new LoreRole();
             gm.setRole(RoleNames.LORE_GM_ROLE_NAME);
             loreRoleRepository.save(gm);
@@ -52,7 +52,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        if(alreadySetup) {
+        if (alreadySetup) {
             return;
         }
         createSystemRoles();

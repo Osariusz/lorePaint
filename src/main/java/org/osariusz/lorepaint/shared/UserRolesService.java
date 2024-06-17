@@ -26,7 +26,6 @@ import java.util.Objects;
 public class UserRolesService {
 
 
-
     @Autowired
     private UserRepository userRepository;
 
@@ -83,7 +82,7 @@ public class UserRolesService {
 
     public boolean isAdmin(UserDTO userDTO) {
         return getUserSystemRoles(userDTO).stream().anyMatch((authority) ->
-            authority.getAuthority().equals(RoleNames.SYSTEM_ADMIN_ROLE_NAME)
+                authority.getAuthority().equals(RoleNames.SYSTEM_ADMIN_ROLE_NAME)
         );
     }
 
@@ -95,7 +94,7 @@ public class UserRolesService {
 
     public boolean isMember(long loreId, UserDTO userDTO) {
         Lore lore = loreRepository.findByIdAndRemovedAtIsNull(loreId).orElse(null);
-        if(lore == null) {
+        if (lore == null) {
             throw new RuntimeException("Lore with id " + loreId + " not found");
         }
         return isMember(lore, userDTO);
@@ -103,7 +102,7 @@ public class UserRolesService {
 
     public boolean isMember(Lore lore, UserDTO userDTO) {
         User user = modelMapper.map(userDTO, User.class);
-        if(isAdmin(userDTO)) {
+        if (isAdmin(userDTO)) {
             return true;
         }
         List<LoreUserRole> loreUserRoles = loreUserRoleRepository.findAllByLoreAndUser(lore, user);
@@ -115,6 +114,7 @@ public class UserRolesService {
     public boolean canSeePlace(Place place, UserDTO userDTO) {
         return (isMember(place.getLore(), userDTO) && !place.getIsSecret()) || canModifyPlace(place, userDTO);
     }
+
     public boolean canModifyPlace(Place place, UserDTO userDTO) {
         return
                 (Objects.equals(place.getOwner().getUsername(), userDTO.getUsername()) && isMember(place.getLore(), userDTO)) ||

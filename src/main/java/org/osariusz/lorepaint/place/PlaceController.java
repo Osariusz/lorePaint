@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping("/api/place")
 @PreAuthorize(
         "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && " +
-        "@userRolesService.isMember(@loreService.getLoreById(#loreId), @userRolesService.springUserToDTO(principal))"
+                "@userRolesService.isMember(@loreService.getLoreById(#loreId), @userRolesService.springUserToDTO(principal))"
 )
 public class PlaceController {
     @Autowired
@@ -57,7 +57,7 @@ public class PlaceController {
     @PostMapping("/create")
     @PreAuthorize(
             "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && " +
-            "@userRolesService.isMember(#placeCreateDTO.loreId, @userRolesService.springUserToDTO(principal))"
+                    "@userRolesService.isMember(#placeCreateDTO.loreId, @userRolesService.springUserToDTO(principal))"
     )
     public ResponseEntity<String> createPlace(@RequestBody PlaceCreateDTO placeCreateDTO, Principal principal) {
         createSavePlace(placeCreateDTO);
@@ -67,7 +67,7 @@ public class PlaceController {
     @GetMapping("/{id}")
     @PreAuthorize(
             "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && " +
-            "@userRolesService.canSeePlace(@placeService.getPlaceById(#placeId), @userRolesService.springUserToDTO(principal))"
+                    "@userRolesService.canSeePlace(@placeService.getPlaceById(#placeId), @userRolesService.springUserToDTO(principal))"
     )
     public Place getPlace(@PathVariable("id") long placeId) {
         return placeService.getPlaceById(placeId);

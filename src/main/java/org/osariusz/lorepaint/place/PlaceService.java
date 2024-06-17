@@ -45,7 +45,7 @@ public class PlaceService {
 
     public Place getPlaceById(Long id) {
         Place place = placeRepository.findByIdAndRemovedAtIsNull(id).orElse(null);
-        if(place == null) {
+        if (place == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Place not found");
         }
         return place;
@@ -58,7 +58,7 @@ public class PlaceService {
 
     public List<Place> getAllPlaces(long loreId) {
         Lore lore = loreService.getLoreById(loreId);
-        if(lore == null) {
+        if (lore == null) {
             throw new RuntimeException("Lore not found");
         }
         return placeRepository.findAllByLoreAndRemovedAtIsNull(lore);

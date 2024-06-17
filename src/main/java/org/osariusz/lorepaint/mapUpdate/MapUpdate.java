@@ -1,4 +1,5 @@
 package org.osariusz.lorepaint.mapUpdate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -43,6 +44,6 @@ public class MapUpdate implements Update {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="map_id")
+    @JoinColumn(name = "map_id")
     private Map map;
 }

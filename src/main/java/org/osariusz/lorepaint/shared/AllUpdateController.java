@@ -37,8 +37,7 @@ public class AllUpdateController {
                     allUpdateService.getAllUpdatesDates(loreId, userRolesService.principalToDTO(principal)),
                     HttpStatus.OK
             );
-        }
-        catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

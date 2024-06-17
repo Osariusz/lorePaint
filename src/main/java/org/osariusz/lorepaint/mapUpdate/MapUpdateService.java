@@ -46,7 +46,7 @@ public class MapUpdateService extends UpdateService<Map, MapUpdate> {
         mapUpdate.setPicture_path(mapPath);
         mapUpdate.setCreated_at(LocalDateTime.now());
         //TODO: make below values configurable
-        mapUpdate.setLore_date(LocalDateTime.of(1,1,1,0,0));
+        mapUpdate.setLore_date(LocalDateTime.of(1, 1, 1, 0, 0));
         mapUpdate.setX(0);
         mapUpdate.setY(0);
         mapUpdate.setMap(map);

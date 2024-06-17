@@ -11,5 +11,5 @@ import java.util.List;
 
 @Repository
 public interface MapUpdateRepository extends JpaRepository<MapUpdate, Long> {
-    public List<MapUpdate> findAllByMap(@NotNull(message = "Map id cannot be null") Map map);
+    List<MapUpdate> findAllByMap(@NotNull(message = "Map id cannot be null") Map map);
 }

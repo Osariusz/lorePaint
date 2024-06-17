@@ -46,7 +46,7 @@ public class Lore {
     @JsonIgnore
     @NotNull(message = "Map must not be null")
     @OneToOne
-    @JoinColumn(name="map_id", nullable = false)
+    @JoinColumn(name = "map_id", nullable = false)
     private Map map;
 
     @JsonIgnore

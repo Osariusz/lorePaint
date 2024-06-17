@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface MapRepository extends JpaRepository<Map, Long> {
-    public List<Map> findAllByLore(@NotNull(message = "Place lore id cannot be null") Lore lore);
+    List<Map> findAllByLore(@NotNull(message = "Place lore id cannot be null") Lore lore);
 
 }

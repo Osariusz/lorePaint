@@ -30,13 +30,13 @@ public class SystemUserRole {
     @JsonIgnore
     @NotNull(message = "SystemUserRole user id cannot be null")
     @ManyToOne
-    @JoinColumn(name="user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @JsonIgnore
     @NotNull(message = "SystemUserRole role string must not be null")
     @ManyToOne
-    @JoinColumn(name="role_id", nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private SystemRole role;
 
     public GrantedAuthority toAuthority() {

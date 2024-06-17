@@ -32,7 +32,7 @@ import java.util.List;
 public class AuthController {
 
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     private UserService userService;
@@ -44,7 +44,7 @@ public class AuthController {
     @Autowired
     private SystemRoleRepository systemRoleRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -62,10 +62,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto,
                                         HttpServletRequest request,
-                                        HttpServletResponse response)
-    {
+                                        HttpServletResponse response) {
 
-        if(userService.userRemoved(loginDto.getUsername())) {
+        if (userService.userRemoved(loginDto.getUsername())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
@@ -76,7 +75,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-        if(userService.userExists(registerDto.getUsername())) {
+        if (userService.userExists(registerDto.getUsername())) {
             return new ResponseEntity<>("Username is taken", HttpStatus.BAD_REQUEST);
         }
         userService.createUser(registerDto, passwordEncoder);

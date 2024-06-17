@@ -11,9 +11,9 @@ import java.util.Optional;
 @Repository
 public interface PlaceRepository extends JpaRepository<Place, Long> {
 
-    public List<Place> findAllByRemovedAtIsNull();
+    List<Place> findAllByRemovedAtIsNull();
 
-    public List<Place> findAllByLoreAndRemovedAtIsNull(@NotNull(message = "Place lore id cannot be null") Lore lore);
+    List<Place> findAllByLoreAndRemovedAtIsNull(@NotNull(message = "Place lore id cannot be null") Lore lore);
 
-    public Optional<Place> findByIdAndRemovedAtIsNull(@NotNull(message = "Place id cannot be null") Long id);
+    Optional<Place> findByIdAndRemovedAtIsNull(@NotNull(message = "Place id cannot be null") Long id);
 }

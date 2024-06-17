@@ -9,13 +9,13 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    public Optional<User> findByUsernameAndRemovedAtIsNull(@NotNull(message = "Username must not be null") String username);
+    Optional<User> findByUsernameAndRemovedAtIsNull(@NotNull(message = "Username must not be null") String username);
 
-    public Optional<User> findByUsername(@NotNull(message = "Username must not be null") String username);
+    Optional<User> findByUsername(@NotNull(message = "Username must not be null") String username);
 
-    public boolean existsByUsernameAndRemovedAtIsNull(@NotNull(message = "Username must not be null") String username);
+    boolean existsByUsernameAndRemovedAtIsNull(@NotNull(message = "Username must not be null") String username);
 
-    public boolean existsByUsername(@NotNull(message = "Username must not be null") String username);
+    boolean existsByUsername(@NotNull(message = "Username must not be null") String username);
 
-    public List<User> findAllByRemovedAtIsNull();
+    List<User> findAllByRemovedAtIsNull();
 }

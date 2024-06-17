@@ -15,8 +15,8 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api/placeUpdate")
 @PreAuthorize(
-                "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&"+
-                "@userRolesService.isMember(#place.lore, @userRolesService.principalToDTO(principal)) &&"+
+        "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&" +
+                "@userRolesService.isMember(#place.lore, @userRolesService.principalToDTO(principal)) &&" +
                 "@userRolesService.canSeePlace(#place, @userRolesService.principalToDTO(principal))"
 )
 public class PlaceUpdateController {
@@ -29,7 +29,7 @@ public class PlaceUpdateController {
 
     @PostMapping("/{id}/create")
     @PreAuthorize(
-                    "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&" +
+            "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&" +
                     "@userRolesService.canModifyPlace(#place, @userRolesService.springUserToDTO(principal))"
     )
     public ResponseEntity<String> updatePlace(@PathVariable("id") Place place, @RequestBody PlaceUpdateDTO placeUpdateDTO) {
@@ -40,7 +40,7 @@ public class PlaceUpdateController {
     @PostMapping("/last/{id}")
     @PreAuthorize(
             "hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) &&" +
-            "@userRolesService.canSeePlace(#place, @userRolesService.springUserToDTO(principal))"
+                    "@userRolesService.canSeePlace(#place, @userRolesService.springUserToDTO(principal))"
     )
     public ResponseEntity<PlaceUpdateDTO> getLastPlaceUpdate(@PathVariable("id") Place place, @RequestBody DateGetDTO placeDateGetDTO) {
         try {
@@ -51,8 +51,7 @@ public class PlaceUpdateController {
                     ),
                     HttpStatus.OK
             );
-        }
-        catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

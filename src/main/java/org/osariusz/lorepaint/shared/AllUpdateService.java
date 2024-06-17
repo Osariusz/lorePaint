@@ -48,7 +48,7 @@ public class AllUpdateService {
 
     public Set<LocalDateTime> getAllUpdatesDates(long loreId, UserDTO userDTO) {
         Lore lore = loreService.getLoreById(loreId);
-        if(lore == null) {
+        if (lore == null) {
             throw new NoSuchElementException("Can't get all updates for null lore");
         }
         List<Update> updates = new ArrayList<>();

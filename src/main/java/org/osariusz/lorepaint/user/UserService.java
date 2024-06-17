@@ -61,7 +61,7 @@ public class UserService implements UserDetailsService {
 
     public boolean userRemoved(String username) {
         User user = userRepository.findByUsername(username).orElse(null);
-        if(user == null) {
+        if (user == null) {
             return false;
         }
         return user.getRemovedAt() != null;

@@ -14,5 +14,4 @@ import org.springframework.web.util.HtmlUtils;
 public class GreetingController {
 
 
-
 }

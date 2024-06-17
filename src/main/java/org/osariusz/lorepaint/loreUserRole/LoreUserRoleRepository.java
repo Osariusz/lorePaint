@@ -11,8 +11,9 @@ import java.util.List;
 
 @Repository
 public interface LoreUserRoleRepository extends JpaRepository<LoreUserRole, Long> {
-    public List<LoreUserRole> findAllByLoreAndUser(@NotNull(message = "LoreUserRole lore id cannot be null") Lore lore, @NotNull(message = "LoreUserRole user id cannot be null") User user);
-    public boolean existsLoreUserRoleByLoreAndUserAndRole(@NotNull(message = "LoreUserRole lore id cannot be null") Lore lore,
-                                                          @NotNull(message = "LoreUserRole user id cannot be null") User user,
-                                                          @NotNull(message = "LoreUserRole role cannot be null") LoreRole role);
+    List<LoreUserRole> findAllByLoreAndUser(@NotNull(message = "LoreUserRole lore id cannot be null") Lore lore, @NotNull(message = "LoreUserRole user id cannot be null") User user);
+
+    boolean existsLoreUserRoleByLoreAndUserAndRole(@NotNull(message = "LoreUserRole lore id cannot be null") Lore lore,
+                                                   @NotNull(message = "LoreUserRole user id cannot be null") User user,
+                                                   @NotNull(message = "LoreUserRole role cannot be null") LoreRole role);
 }

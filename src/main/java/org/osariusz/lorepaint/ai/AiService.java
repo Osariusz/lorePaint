@@ -26,7 +26,7 @@ public class AiService {
 
         String base = "### TASK ###\nYou are a writer who's job is to write a beautiful description of a place. You will be presented with some information about the place and your job is to use your imagination and develop a completely new, interesting story for this place. Output only the description and nothing else. Your answer should be short but creative. Place info:\n";
 
-        String prompt = base+"name: "+data.name+" details: "+data.info+ "\n### AI RESPONSE ###";
+        String prompt = base + "name: " + data.name + " details: " + data.info + "\n### AI RESPONSE ###";
 
         ObjectNode generationObject = mapper.createObjectNode();
         generationObject.put("model", AI_MODEL);
@@ -43,8 +43,7 @@ public class AiService {
             assert result != null;
             return result.getResponse();
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }

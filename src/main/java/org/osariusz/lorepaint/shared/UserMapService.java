@@ -35,7 +35,7 @@ public class UserMapService {
         List<Place> lorePlaces = placeRepository.findAllByLoreAndRemovedAtIsNull(lore);
         return lorePlaces.stream().filter((Place place) ->
                 !place.getIsSecret() ||
-                userRolesService.isGM(lore, userDTO) ||
-                place.getOwner().equals(user)).toList();
-        }
+                        userRolesService.isGM(lore, userDTO) ||
+                        place.getOwner().equals(user)).toList();
+    }
 }

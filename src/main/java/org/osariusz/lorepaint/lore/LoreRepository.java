@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface LoreRepository extends JpaRepository<Lore, Long> {
-    public Optional<Lore> findByIdAndRemovedAtIsNull(@NotNull(message = "Lore Id cannot be null") long id);
+    Optional<Lore> findByIdAndRemovedAtIsNull(@NotNull(message = "Lore Id cannot be null") long id);
 
-    public List<Lore> findAllByRemovedAtIsNull();
+    List<Lore> findAllByRemovedAtIsNull();
 }

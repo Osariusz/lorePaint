@@ -56,11 +56,10 @@ public class LoreController {
         Lore lore = loreService.getLoreById(loreId);
         try {
             return new ResponseEntity<>(loreMapService.getLastLoreMapUpdate(lore, loreDateDTO.getLore_date()), HttpStatus.OK);
-        }
-        catch (NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        
+
     }
 
     @PostMapping("/create")
@@ -74,17 +73,15 @@ public class LoreController {
     @PreAuthorize("hasAuthority(@RoleNames.SYSTEM_USER_ROLE_NAME) && (@userRolesService.isGM(@loreService.getLoreById(#loreId), @userRolesService.springUserToDTO(principal)) || @userRolesService.isAdmin(@userRolesService.springUserToDTO(principal)))")
     public ResponseEntity<String> addUser(@PathVariable("id") long loreId, @RequestBody User user) {
         Lore lore = loreService.getLoreById(loreId);
-        if(lore == null) {
+        if (lore == null) {
             return new ResponseEntity<>("Lore not found", HttpStatus.BAD_REQUEST);
         }
         try {
             loreService.assignSaveLoreUserRole(user, lore, RoleNames.LORE_MEMBER_ROLE_NAME);
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch (UsernameNotFoundException ex) {
+        } catch (UsernameNotFoundException ex) {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
-        }
-        catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             return new ResponseEntity<>("Can't add role for that user", HttpStatus.BAD_REQUEST);
         }
 
@@ -96,18 +93,16 @@ public class LoreController {
     public ResponseEntity<String> mousePositions(@DestinationVariable("id") long loreId, @Payload String message, Principal principal) {
         UserDTO userDTO = userRolesService.principalToDTO(principal);
         try {
-            if(userRolesService.isUser(userDTO) && userRolesService.isMember(loreId, userDTO)) {
+            if (userRolesService.isUser(userDTO) && userRolesService.isMember(loreId, userDTO)) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 double[] coordinates = objectMapper.readValue(message, double[].class);
                 MouseCursorDTO mouseCursorDTO = new MouseCursorDTO(principal.getName(), coordinates);
-                messagingTemplate.convertAndSend(this.getClass().getAnnotation(RequestMapping.class).value()[0]+"/"+loreId+"/get_mouse", mouseCursorDTO);
+                messagingTemplate.convertAndSend(this.getClass().getAnnotation(RequestMapping.class).value()[0] + "/" + loreId + "/get_mouse", mouseCursorDTO);
                 return new ResponseEntity<>(message, HttpStatus.OK);
-            }
-            else {
+            } else {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

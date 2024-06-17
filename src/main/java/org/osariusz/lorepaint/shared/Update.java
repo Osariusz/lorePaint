@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 public interface Update {
-    public LocalDateTime getLore_date();
+    LocalDateTime getLore_date();
 
-    public LocalDateTime getCreated_at();
+    LocalDateTime getCreated_at();
 
 }

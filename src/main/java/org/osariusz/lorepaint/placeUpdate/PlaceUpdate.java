@@ -42,7 +42,7 @@ public class PlaceUpdate implements Update {
     //TODO: fix cascading @NotNull(message = "Place update place id must not be null")
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="place_id")
+    @JoinColumn(name = "place_id")
     //@JsonBackReference
     private Place place;
 

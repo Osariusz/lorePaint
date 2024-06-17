@@ -54,17 +54,17 @@ public class Place {
     @JsonIgnore
     @NotNull(message = "Lore id must not be null")
     @ManyToOne
-    @JoinColumn(name="lore_id", nullable = false)
+    @JoinColumn(name = "lore_id", nullable = false)
     private Lore lore;
 
     @JsonIgnore
     @NotNull(message = "Owner id must not be null")
     @ManyToOne
-    @JoinColumn(name="owner_id", nullable = false)
+    @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
 
-    @OneToMany(mappedBy = "place",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "place", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     //TODO: fix @NotEmpty(message = "Place must have at least one place update")
     //@JsonManagedReference
     private List<PlaceUpdate> placeUpdates;

@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface SystemUserRoleRepository extends JpaRepository<SystemUserRole, Long> {
-    public List<SystemUserRole> findAllByUser(@NotNull(message = "SystemUserRole user id cannot be null") User user);
+    List<SystemUserRole> findAllByUser(@NotNull(message = "SystemUserRole user id cannot be null") User user);
 }

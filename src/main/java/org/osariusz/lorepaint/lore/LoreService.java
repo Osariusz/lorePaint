@@ -46,7 +46,7 @@ public class LoreService {
 
     public Lore getLoreById(Long id) {
         Lore lore = loreRepository.findByIdAndRemovedAtIsNull(id).orElse(null);
-        if(lore == null) {
+        if (lore == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lore not found");
         }
         return lore;
@@ -74,7 +74,7 @@ public class LoreService {
     }
 
     public void assignSaveLoreUserRole(User user, Lore lore, String roleName) {
-        if(!userService.userExists(user.getUsername())) {
+        if (!userService.userExists(user.getUsername())) {
             throw new UsernameNotFoundException("User not found");
         }
         LoreUserRole loreUserRole = loreUserRoleService.assignLoreUserRole(user, lore, roleName);

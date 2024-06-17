@@ -46,16 +46,16 @@ class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                    .csrf(csrf -> csrf
-                            .ignoringRequestMatchers("/public/**") // TODO: Secure the login and register endpoints from csrf
-                            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                            .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
-                    )
-                    .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-                    .logout((logout) -> logout.logoutUrl("/public/logout").logoutSuccessHandler((request, response, authentication) -> {
-                        response.setStatus(HttpServletResponse.SC_OK);
-                    }))
-                    .cors(cors -> cors.configurationSource(request -> {
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/public/**") // TODO: Secure the login and register endpoints from csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
+                )
+                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .logout((logout) -> logout.logoutUrl("/public/logout").logoutSuccessHandler((request, response, authentication) -> {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                }))
+                .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     configuration.setAllowedOrigins(List.of(FRONT_URL));
                     configuration.setAllowedMethods(List.of("*"));
@@ -63,12 +63,13 @@ class SecurityConfiguration {
                     configuration.setAllowCredentials(true);
                     return configuration;
                 }))
-                .securityContext(securityCustomizer -> {securityCustomizer.securityContextRepository(securityContextRepository());})
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/public/**").permitAll().requestMatchers("/error/**","/api/**").authenticated().anyRequest().denyAll());
+                .securityContext(securityCustomizer -> {
+                    securityCustomizer.securityContextRepository(securityContextRepository());
+                })
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/public/**").permitAll().requestMatchers("/error/**", "/api/**").authenticated().anyRequest().denyAll());
 
         return http.build();
     }
-
 
 
     @Bean

@@ -33,7 +33,7 @@ public class LoreUserRoleService {
     }
 
     public LoreUserRole assignLoreUserRole(User user, Lore lore, String role) {
-        if(userHasLoreRole(lore, user, role)) {
+        if (userHasLoreRole(lore, user, role)) {
             throw new IllegalArgumentException("User already has that role");
         }
         LoreUserRole loreUserRole = new LoreUserRole();
