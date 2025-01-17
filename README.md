@@ -12,3 +12,5 @@ LorePaint is a Spring Boot application that enables seamless location management
 - 🌍 **Real-Time Teamwork:** Live collaboration features, including cursor tracking and role-based map editing, for intuitive user interaction.
 - 🛠️ Built for Impact: A robust, real-world project that combines collaboration, live updates, and efficient data management.
 - 🚀 Stand Out from the Crowd: A unique opportunity to demonstrate your ability to build scalable, interactive platforms from scratch.
+
+Frontend: https://github.com/Osariusz/lorepaint-ui
