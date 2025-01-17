@@ -1,4 +1,4 @@
-**LorePaint - Collaborative Mapping Made Simple**  
+# **LorePaint - Collaborative Mapping Made Simple**  
 
 LorePaint is a Spring Boot application that enables seamless location management and collaborative editing on interactive maps. It features real-time updates, role-based access control, and interactive tools powered by **WebSockets** for smooth teamwork.  
 
